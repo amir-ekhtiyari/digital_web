@@ -1,0 +1,64 @@
+from django.db import models
+from django.contrib.auth.models import User
+
+
+class ActiveProductManager(models.Manager):
+    def active(self):
+        return self.filter(is_active=True)
+
+    def by_category(self, category_name):
+        return self.filter(category=category_name, is_active=True)
+
+
+class Product(models.Model):
+    CATEGORY_CHOICES = (
+        ('book', 'کتاب'),
+        ('music', 'موسیقی'),
+        ('article', 'مقاله'),
+        ('image', 'تصویر'),
+        ('other', 'سایر'),
+    )
+
+    seller = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='فروشنده')
+    title = models.CharField(max_length=100, verbose_name='عنوان فایل')
+    description = models.TextField(verbose_name='توضیحات')
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, verbose_name='دسته‌بندی')
+    file = models.FileField(upload_to='uploads/', verbose_name='فایل')
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='قیمت (تومان)')
+    keywords = models.CharField(max_length=200, blank=True, verbose_name='کلمات کلیدی')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
+    is_active = models.BooleanField(default=True, verbose_name='فعال/غیرفعال')
+
+    objects = ActiveProductManager()
+
+    class Meta:
+        verbose_name = "فایل دیجیتال"
+        verbose_name_plural = "فایل‌های دیجیتال"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.title} - {self.seller.username}"
+
+
+# کلاس کد تخفیف تخفیف
+
+class ActiveDiscountManager(models.Manager):
+    def active(self):
+        return self.filter(active=True)
+
+
+class DiscountCode(models.Model):
+    code = models.CharField(max_length=20, unique=True, verbose_name='کد تخفیف')
+    discount_percent = models.IntegerField(verbose_name='درصد تخفیف')
+    active = models.BooleanField(default=True, verbose_name='فعال')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
+
+    objects = ActiveDiscountManager()
+
+    class Meta:
+        verbose_name = "کد تخفیف"
+        verbose_name_plural = "کدهای تخفیف"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.code} ({self.discount_percent}%)"
