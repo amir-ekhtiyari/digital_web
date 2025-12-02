@@ -1,0 +1,28 @@
+{% extends "parents/base.html" %}
+{% load static %}
+{% block title %}جزئیات محصول{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-5">
+       {% with img=product.get_main_image %}
+    {% if img %}
+        <img src="{{ img.url }}" class="img-fluid rounded" alt="{{ product.title }}">
+    {% else %}
+        <img src="{% static 'images/placeholder.png' %}" class="img-fluid rounded" alt="placeholder">
+    {% endif %}
+{% endwith %}
+
+    </div>
+
+    <div class="col-md-7">
+        <h2>{{ product.title }}</h2>
+        <p>{{ product.description }}</p>
+
+        <h4 class="text-success">{{ product.price }} تومان</h4>
+
+        <a href="/orders/buy/{{ product.id }}/" class="btn btn-success btn-lg mt-3">خرید</a>
+    </div>
+</div>
+{% endblock %}
+

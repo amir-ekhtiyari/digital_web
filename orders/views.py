@@ -1,3 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import *
 
-# Create your views here.
+@login_required
+def order_list(request):
+    orders = Order.objects.filter(buyer=request.user)
+    return render(request, "orders/list.html", {"orders": orders})
+
+@login_required
+def checkout(request):
+    return render(request, "orders/detail.html")

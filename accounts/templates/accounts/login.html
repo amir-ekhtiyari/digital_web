@@ -1,0 +1,17 @@
+{% extends "parents/base.html" %}
+{% block title %}ورود کاربران{% endblock %}
+
+{% block content %}
+<div class="col-md-6 mx-auto">
+    <div class="card p-4">
+        <h3 class="text-center mb-3">ورود</h3>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button class="btn btn-dark w-100 mt-3">ورود</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 
 class ProfileManager(models.Manager):
@@ -8,14 +8,13 @@ class ProfileManager(models.Manager):
     def buyers(self):
         return self.filter(role='buyer')
 
-
 class Profile(models.Model):
     ROLE_CHOICES = (
         ('seller', 'فروشنده'),
         ('buyer', 'خریدار'),
     )
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='کاربر')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='کاربر', related_name='profile')
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, verbose_name='نقش کاربر')
     phone = models.CharField(max_length=15, blank=True, verbose_name='شماره تماس')
 

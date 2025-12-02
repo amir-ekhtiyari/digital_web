@@ -1,0 +1,22 @@
+{% extends "parents/base.html" %}
+{% block title %}سفارش‌ها{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">سفارش‌های شما</h2>
+
+<table class="table table-striped">
+    <tr>
+        <th>محصول</th>
+        <th>تاریخ</th>
+        <th>وضعیت</th>
+    </tr>
+
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.product.title }}</td>
+        <td>{{ order.created_at }}</td>
+        <td>{{ order.status }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

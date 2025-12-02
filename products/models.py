@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
-
+from django.conf import settings
+from django.urls import reverse
 
 class ActiveProductManager(models.Manager):
     def active(self):
@@ -19,7 +19,7 @@ class Product(models.Model):
         ('other', 'سایر'),
     )
 
-    seller = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='فروشنده')
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='فروشنده', related_name='products')
     title = models.CharField(max_length=100, verbose_name='عنوان فایل')
     description = models.TextField(verbose_name='توضیحات')
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, verbose_name='دسته‌بندی')
@@ -39,12 +39,18 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.title} - {self.seller.username}"
 
+    def get_absolute_url(self):
+        return reverse('products:detail', args=[self.pk])
 
-# کلاس کد تخفیف تخفیف
+    def get_main_image(self):
+        from django.contrib.contenttypes.models import ContentType
+        from mediafiles.models import Image
 
-class ActiveDiscountManager(models.Manager):
-    def active(self):
-        return self.filter(active=True)
+        ct = ContentType.objects.get_for_model(self.__class__)
+        img = Image.objects.filter(content_type=ct, object_id=self.pk).first()
+        if img:
+            return img.image
+        return None
 
 
 class DiscountCode(models.Model):
@@ -52,8 +58,6 @@ class DiscountCode(models.Model):
     discount_percent = models.IntegerField(verbose_name='درصد تخفیف')
     active = models.BooleanField(default=True, verbose_name='فعال')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
-
-    objects = ActiveDiscountManager()
 
     class Meta:
         verbose_name = "کد تخفیف"

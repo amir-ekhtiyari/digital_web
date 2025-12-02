@@ -1,0 +1,46 @@
+{% extends "parents/base.html" %}
+{% load static %}
+{% block title %}لیست محصولات{% endblock %}
+
+{% block content %}
+
+    <h2 class="mb-4">محصولات</h2>
+
+    <div class="row">
+
+        {% for product in products %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    {% with img=product.get_main_image %}
+                        {% if img %}
+                            <img src="{{ img.url }}" class="card-img-top" alt="{{ product.title }}">
+                        {% else %}
+                            <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="placeholder">
+                        {% endif %}
+                    {% endwith %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.title }}</h5>
+                        <p>{{ product.description|truncatewords:15 }}</p>
+                        <a href="/products/{{ product.id }}/" class="btn btn-primary">مشاهده</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+{% endblock %}
+
+{% comment %}
+قبلاً: <img src="{{ product.image.url }}" class="card-img-top">
+اصلاح ش: اگر تصویر داشت نمایش بده وگرنه placeholder.
+{% endcomment %}
+
+{% with img=product.get_main_image %}
+    {% if img %}
+        <img src="{{ img.url }}" class="card-img-top" alt="{{ product.title }}">
+    {% else %}
+        <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="placeholder">
+    {% endif %}
+{% endwith %}

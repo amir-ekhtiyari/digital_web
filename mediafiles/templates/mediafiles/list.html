@@ -1,0 +1,17 @@
+{% extends "parents/base.html" %}
+{% load static %}
+{% block title %}فایل‌ها{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">فایل‌های رسانه‌ای</h2>
+
+<ul class="list-group">
+    {% for file in files %}
+    <li class="list-group-item d-flex justify-content-between">
+        {{ file.title }}
+        <a href="{{ file.file.url }}" class="btn btn-sm btn-dark">دانلود</a>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

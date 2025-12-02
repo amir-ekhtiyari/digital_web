@@ -1,0 +1,16 @@
+{% extends "parents/base.html" %}
+{% block title %}تماس با ما{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">تماس با ما</h2>
+
+<div class="col-md-6 mx-auto">
+    <div class="card p-4">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-primary w-100">ارسال پیام</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

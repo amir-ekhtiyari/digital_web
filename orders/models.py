@@ -1,7 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from products.models import Product, DiscountCode
-
 
 class PaidOrderManager(models.Manager):
     def paid_orders(self):
@@ -13,10 +12,9 @@ class PaidOrderManager(models.Manager):
     def by_user(self, user):
         return self.filter(buyer=user)
 
-
 class Order(models.Model):
-    buyer = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='خریدار')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='فایل')
+    buyer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='خریدار', related_name='orders')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='فایل', related_name='orders')
     discount = models.ForeignKey(DiscountCode, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='کد تخفیف')
     total_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='قیمت نهایی')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ سفارش')
@@ -34,4 +32,4 @@ class Order(models.Model):
 
     @property
     def status(self):
-        return "پرداخت شده" if self.paid else "در انتظار پرداخت"
+        return "پرداخت شده" if self.paid else "پرداخت نشده"

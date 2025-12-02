@@ -1,0 +1,17 @@
+{% extends "parents/base.html" %}
+{% block title %}جزئیات سفارش{% endblock %}
+
+{% block content %}
+<h2>سفارش شماره {{ order.id }}</h2>
+
+<div class="card p-3 mt-3">
+    <p><strong>محصول:</strong> {{ order.product.title }}</p>
+    <p><strong>تاریخ:</strong> {{ order.created_at }}</p>
+    <p><strong>وضعیت:</strong> {{ order.status }}</p>
+
+    {% if order.status == "paid" %}
+    <a href="{{ order.product.file.url }}" class="btn btn-success mt-3">دانلود فایل</a>
+    {% endif %}
+</div>
+
+{% endblock %}

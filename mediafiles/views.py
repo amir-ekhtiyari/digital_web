@@ -1,3 +1,6 @@
 from django.shortcuts import render
+from .models import Image
 
-# Create your views here.
+def gallery_view(request):
+    files = Image.objects.all()
+    return render(request, "mediafiles/list.html", {"files": files})
