@@ -1,0 +1,149 @@
+{% extends "parents/base.html" %}
+{% load static %}
+
+{% block title %}پروفایل من{% endblock %}
+
+{% block content %}
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4">
+
+                <!-- کارت پروفایل اصلی -->
+                <div class="col-lg-8">
+                    <div class="card rounded-5 shadow-lg border-0 overflow-hidden">
+                        <div class="bg-gradient-profile p-4 text-white">
+                            <div class="d-flex align-items-center">
+                                <div class="profile-avatar-large me-3">
+                                    {% if profile.avatar %}
+                                        <img src="{{ profile.avatar.url }}"
+                                             alt="avatar"
+                                             class="w-100 h-100 rounded-circle object-fit-cover">
+                                    {% else %}
+                                        <span class="avatar-letter">
+                                        {{ request.user.first_name|default:request.user.username|first }}
+                                    </span>
+                                    {% endif %}
+                                    <span class="avatar-status bg-success"></span>
+                                </div>
+                                <div>
+                                    <h4 class="mb-1">{{ request.user.get_full_name|default:request.user.username }}</h4>
+                                    <p class="mb-0 small opacity-75">
+                                        {{ profile.get_role_display }} | {{ request.user.email }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-4">
+                            <h6 class="fw-bold mb-3">اطلاعات پروفایل</h6>
+
+                            <form method="post" enctype="multipart/form-data" class="row g-3">
+                                {% csrf_token %}
+
+                                <div class="col-md-6">
+                                    <label class="form-label">نام</label>
+                                    <input type="text" class="form-control" value="{{ request.user.first_name }}"
+                                           disabled>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">نام خانوادگی</label>
+                                    <input type="text" class="form-control" value="{{ request.user.last_name }}"
+                                           disabled>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">ایمیل</label>
+                                    <input type="email" class="form-control" value="{{ request.user.email }}" disabled>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">نقش کاربر</label>
+                                    {{ p_form.role }}
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">شماره تماس</label>
+                                    {{ p_form.phone }}
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">عکس پروفایل</label>
+                                    <div class="avatar-upload-wrapper border rounded-4 p-3 d-flex align-items-center gap-3">
+                                        <div class="rounded-circle overflow-hidden" style="width:56px;height:56px;">
+                                            {% if profile.avatar %}
+                                                <img src="{{ profile.avatar.url }}" class="w-100 h-100 object-fit-cover"
+                                                     alt="avatar">
+                                            {% else %}
+                                                <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light text-muted">
+                                                    <i class="bi bi-person fs-3"></i>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <input type="file" name="{{ p_form.avatar.html_name }}" accept="image/*"
+                                                   class="form-control form-control-sm">
+                                            <small class="text-muted d-block mt-1">
+                                                فرمت‌های مجاز: jpg, png — حداکثر ۲ مگابایت
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-12 mt-3">
+                                    <button type="submit" class="btn btn-primary">
+                                        ذخیره تغییرات
+                                    </button>
+                                    <a href="{% url 'accounts:logout' %}" class="btn btn-outline-danger ms-2">
+                                        خروج از حساب
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- سایدبار -->
+                <div class="col-lg-4">
+                    <div class="card rounded-5 shadow-lg border-0 mb-4">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3">خلاصه حساب</h6>
+                            <ul class="list-unstyled small mb-0">
+                                <li class="mb-2">
+                                    <i class="bi bi-person-badge ms-1"></i>
+                                    نام کاربری: <strong>{{ request.user.username }}</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-calendar3 ms-1"></i>
+                                    عضویت از:
+                                    <strong>{{ request.user.date_joined|date:"Y/m/d" }}</strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card rounded-5 shadow-lg border-0">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3">میانبرها</h6>
+                            <div class="d-grid gap-2">
+                                <a href="/orders/" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-receipt ms-1"></i>
+                                    مشاهده سفارش‌ها
+                                </a>
+                                <a href="/accounts/downloads/" class="btn btn-outline-secondary btn-sm">
+                                    <i class="bi bi-cloud-arrow-down ms-1"></i>
+                                    دانلودهای من
+                                </a>
+                                <a href="/contact/" class="btn btn-outline-dark btn-sm">
+                                    <i class="bi bi-life-preserver ms-1"></i>
+                                    پشتیبانی
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

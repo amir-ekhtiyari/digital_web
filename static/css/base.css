@@ -1007,3 +1007,40 @@ header::after,
     color: #ffffff !important;   /* متن سفید خالص */
     opacity: 1 !important;       /* شفافیت کامل */
 }
+
+.hero-image-wrapper {
+    height: 260px;
+}
+
+.hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+.hero-overlay-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0.35), rgba(0,0,0,0.15));
+    pointer-events: none;
+    border-radius: 16px;
+}
+
+.hero-section .row {
+    align-items: center;
+}
+
+@media (min-width: 992px) {
+    .hero-section {
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+}
+
+/* مخفی کردن متن زشت FileField پیش‌فرض، اگر جایی باقی مانده باشد */
+input[type="file"] + a,
+input[type="file"] ~ label[for$="-clear_id"],
+input[type="file"] ~ input[type="checkbox"] {
+    display: none !important;
+}

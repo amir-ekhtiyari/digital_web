@@ -1,23 +1,20 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="ورود به حساب کاربری فایل‌مارکت - دانلود فایل‌های دیجیتال باکیفیت">
 
     <title>ورود به حساب کاربری - فایل‌مارکت</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <!-- Bootstrap RTL -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
 
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <!-- Main CSS -->
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -25,135 +22,125 @@
 
 <body class="login-page d-flex align-items-center min-vh-100 bg-gradient-login text-center p-3 p-md-4">
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-5 col-md-7 col-sm-9">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7 col-sm-9">
 
-                <!-- Login Card -->
-                <div class="login-card position-relative rounded-5 shadow-xl bg-white p-4 p-md-5 fade-in-up">
+            <!-- Login Card -->
+            <div class="login-card position-relative rounded-5 shadow-xl bg-white p-4 p-md-5 fade-in-up">
 
-                    <!-- Brand -->
-                    <div class="brand-section mb-4 mb-md-5 text-center">
-                        <div class="brand-logo mx-auto mb-3">
-                            <i class="bi bi-cloud-arrow-down-fill display-3 text-primary"></i>
-                        </div>
-                        <h2 class="fw-bold mb-1">فایل‌مارکت</h2>
-                        <p class="text-muted mb-0">به حساب کاربریت خوش آمدی</p>
+                <!-- Brand -->
+                <div class="brand-section mb-4 mb-md-5 text-center">
+                    <div class="brand-logo mx-auto mb-3">
+                        <i class="bi bi-cloud-arrow-down-fill display-3 text-primary"></i>
+                    </div>
+                    <h2 class="fw-bold mb-1">فایل‌مارکت</h2>
+                    <p class="text-muted mb-0">به حساب کاربریت خوش آمدی</p>
+                </div>
+
+                <!-- Messages -->
+                {% if messages %}
+                    <div class="mb-3 text-start">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} small mb-2">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger small text-start mb-3">
+                        {% for error in form.non_field_errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <!-- Login Form -->
+                <form method="post" action="{% url 'accounts:login' %}" class="text-start">
+                    {% csrf_token %}
+
+                    <!-- Username -->
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">
+                            <i class="bi bi-person ms-1"></i>
+                            نام کاربری
+                        </label>
+                        <input type="text"
+                               class="form-control login-input"
+                               id="id_username"
+                               name="username"
+                               value="{{ form.username.value|default_if_none:'' }}"
+                               required
+                               autofocus>
+                        {{ form.username.errors }}
                     </div>
 
-                    <!-- Login Form -->
-                    <form method="post" action="{% url 'accounts:login' %}" class="login-form">
-                        {% csrf_token %}
+                    <!-- Password -->
+                    <div class="mb-3 position-relative">
+                        <label for="id_password" class="form-label">
+                            <i class="bi bi-lock ms-1"></i>
+                            رمز عبور
+                        </label>
+                        <input type="password"
+                               class="form-control login-input"
+                               id="id_password"
+                               name="password"
+                               required>
+                        {{ form.password.errors }}
+                    </div>
 
-                        <!-- Username -->
-                        <div class="form-floating mb-4">
-                            <input type="text"
-                                   class="form-control form-control-lg login-input"
-                                   id="username"
-                                   name="username"
-                                   placeholder="نام کاربری"
-                                   required
-                                   autofocus>
-                            <label for="username">
-                                <i class="bi bi-person me-2"></i>
-                                نام کاربری
+                    <!-- Remember Me + Forgot -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="remember-me" id="remember-me">
+                            <label class="form-check-label small text-muted" for="remember-me">
+                                مرا به خاطر بسپار
                             </label>
                         </div>
+                        <a href="/accounts/password_reset/" class="small text-primary fw-semibold">
+                            فراموشی رمز؟
+                        </a>
+                    </div>
 
-                        <!-- Password -->
-                        <div class="form-floating mb-4">
-                            <input type="password"
-                                   class="form-control form-control-lg login-input"
-                                   id="password"
-                                   name="password"
-                                   placeholder="رمز عبور"
-                                   required>
-                            <label for="password">
-                                <i class="bi bi-lock me-2"></i>
-                                رمز عبور
-                            </label>
-                            <div class="password-toggle mt-2">
-                                <i class="bi bi-eye" id="togglePassword"></i>
-                            </div>
-                        </div>
+                    <!-- Submit Button -->
+                    <button class="btn btn-primary btn-lg w-100 mb-4" type="submit">
+                        <i class="bi bi-box-arrow-in-right ms-1"></i>
+                        ورود به حساب
+                    </button>
 
-                        <!-- Remember Me -->
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="remember-me" id="remember-me">
-                                <label class="form-check-label small text-muted" for="remember-me">
-                                    مرا به خاطر بسپار
-                                </label>
-                            </div>
-                            <a href="/accounts/password_reset/" class="small text-primary fw-semibold">فراموشی رمز؟</a>
-                        </div>
+                    <!-- Divider -->
+                    <div class="divider my-4 text-center">
+                        <span class="divider-text">یا</span>
+                    </div>
 
-                        <!-- Submit Button -->
-                        <button class="btn btn-primary btn-lg w-100 mb-4 login-btn" type="submit">
-                            <span class="btn-text">
-                                <i class="bi bi-box-arrow-in-right me-2"></i>
-                                ورود به حساب
-                            </span>
-                            <span class="btn-loader d-none">
-                                <span class="spinner-border spinner-border-sm me-2"></span>
-                                در حال ورود...
-                            </span>
-                        </button>
+                    <!-- Register Link -->
+                    <div class="register-section text-center">
+                        <p class="text-muted mb-3">
+                            حساب کاربری نداری؟
+                        </p>
+                        <a href="{% url 'accounts:signup' %}" class="btn btn-outline-primary btn-lg w-100">
+                            <i class="bi bi-person-plus ms-1"></i>
+                            ساخت حساب جدید
+                        </a>
+                    </div>
+                </form>
 
-                        <!-- Divider -->
-                        <div class="divider my-4">
-                            <span class="divider-text">یا</span>
-                        </div>
+            </div>
 
-                        <!-- Register Link -->
-                        <div class="register-section">
-                            <p class="text-muted mb-3">
-                                حساب کاربری نداری؟
-                            </p>
-                            <a href="/accounts/register/" class="btn btn-outline-primary btn-lg w-100">
-                                <i class="bi bi-person-plus me-2"></i>
-                                ساخت حساب جدید
-                            </a>
-                        </div>
-                    </form>
-
-                </div>
-
-                <!-- Footer -->
-                <div class="login-footer mt-4 pt-4 text-center">
-                    <small class="text-muted">
-                        © ۲۰۲۵ فایل‌مارکت - طراحی توسط مانی و امیر
-                    </small>
-                </div>
+            <!-- Footer -->
+            <div class="login-footer mt-4 pt-4 text-center">
+                <small class="text-muted">
+                    © ۲۰۲۵ فایل‌مارکت
+                </small>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-        // Password toggle
-        const togglePassword = document.querySelector('#togglePassword');
-        const password = document.querySelector('#password');
-
-        togglePassword.addEventListener('click', function () {
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            this.classList.toggle('bi-eye');
-            this.classList.toggle('bi-eye-slash');
-        });
-
-        // Loading state
-        document.querySelector('.login-btn').addEventListener('click', function() {
-            const btn = this;
-            const btnText = btn.querySelector('.btn-text');
-            const btnLoader = btn.querySelector('.btn-loader');
-
-            btn.disabled = true;
-            btnText.classList.add('d-none');
-            btnLoader.classList.remove('d-none');
-        });
-    </script>
 </body>
 </html>
