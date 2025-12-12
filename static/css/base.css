@@ -976,3 +976,34 @@ header::after,
     pointer-events: none;
 }
 
+.nice-contact-form input,
+.nice-contact-form textarea {
+    color: #111827;
+}
+
+.nice-contact-form input::placeholder,
+.nice-contact-form textarea::placeholder {
+    color: #9ca3af;
+    opacity: 1;
+}
+
+.nice-contact-form .nice-label {
+    min-width: 80px;
+}
+
+.nice-contact-form input,
+.nice-contact-form textarea {
+    width: 100%;
+}
+
+/* مخصوص هدر صفحه تماس */
+.bg-gradient-contact {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 40%, #0f172a 100%) !important;
+    /* پس‌زمینه تیره‌تر تا متن سفید واضح شود */
+}
+
+.page-hero h1,
+.page-hero .lead {
+    color: #ffffff !important;   /* متن سفید خالص */
+    opacity: 1 !important;       /* شفافیت کامل */
+}

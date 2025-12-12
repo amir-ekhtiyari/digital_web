@@ -10,7 +10,7 @@
     <div class="container text-center">
         <h1 class="fw-bold mb-3 display-5">تماس با <span class="text-white-emphasis">ما</span></h1>
         <p class="lead mb-0 opacity-90">
-            هر سوالی داری؟ در چند ثانیه پاسخ می‌گیری
+            هر سوالی داری؟ در کمتر از ۲۴ ساعت پاسخ می‌گیری
         </p>
     </div>
 </section>
@@ -37,39 +37,68 @@
                         {% csrf_token %}
                         {{ form.non_field_errors }}
 
-                        <div class="form-row mb-4">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    {{ form.first_name}}
+                        <!-- نام و نام خانوادگی -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <div class="form-item">
+                                    <label class="nice-label" for="{{ form.first_name.id_for_label }}">
+                                        {{ form.first_name.label|default:"نام" }}
+                                    </label>
+                                    {{ form.first_name }}
                                 </div>
-                                <div class="col-md-6">
-                                    {{ form.last_name}}
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-item">
+                                    <label class="nice-label" for="{{ form.last_name.id_for_label }}">
+                                        {{ form.last_name.label|default:"نام خانوادگی" }}
+                                    </label>
+                                    {{ form.last_name }}
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-row mb-4">
-                            {{ form.email}}
+                        <!-- ایمیل -->
+                        <div class="mb-4">
+                            <div class="form-item">
+                                <label class="nice-label" for="{{ form.email.id_for_label }}">
+                                    {{ form.email.label|default:"ایمیل" }}
+                                </label>
+                                {{ form.email }}
+                            </div>
                         </div>
 
-                        <div class="form-row mb-4">
-                            {{ form.subject}}
+                        <!-- موضوع -->
+                        <div class="mb-4">
+                            <div class="form-item">
+                                <label class="nice-label" for="{{ form.subject.id_for_label }}">
+                                    {{ form.subject.label|default:"موضوع" }}
+                                </label>
+                                {{ form.subject }}
+                            </div>
                         </div>
 
-                        <div class="form-row mb-5">
-                            {{ form.message}}
+                        <!-- پیام -->
+                        <div class="mb-5">
+                            <div class="form-item">
+                                <label class="nice-label" for="{{ form.message.id_for_label }}">
+                                    {{ form.message.label|default:"متن پیام" }}
+                                </label>
+                                {{ form.message }}
+                            </div>
                         </div>
 
                         {% if form.errors %}
                             <div class="alert alert-danger small mb-4">
                                 <i class="bi bi-exclamation-triangle me-2"></i>
-                                لطفاً تمام فیلدها را به درستی پر کنید.
+                                لطفاً تمام فیلدها را به درستی پر کن.
                             </div>
                         {% endif %}
 
                         <button type="submit" class="btn btn-primary btn-lg w-100 nice-btn">
-                            <i class="bi bi-send me-2"></i>
-                            ارسال پیام
+                            <span class="btn-text">
+                                <i class="bi bi-send me-2"></i>
+                                ارسال پیام
+                            </span>
                             <div class="btn-loader d-none">
                                 <span class="spinner-border spinner-border-sm me-2"></span>
                                 در حال ارسال...
@@ -129,6 +158,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
@@ -137,18 +167,24 @@
 
 {% block extra_js %}
 <script>
-document.querySelector('.nice-btn').addEventListener('click', function() {
-    const btn = this;
-    const loader = this.querySelector('.btn-loader');
+document.addEventListener('DOMContentLoaded', function () {
+    const btn = document.querySelector('.nice-btn');
+    if (!btn) return;
 
-    btn.disabled = true;
-    loader.classList.remove('d-none');
+    btn.addEventListener('click', function () {
+        const loader = this.querySelector('.btn-loader');
+        const text = this.querySelector('.btn-text');
 
-    // Re-enable after 3 seconds (or handle with real form submission)
-    setTimeout(() => {
-        btn.disabled = false;
-        loader.classList.add('d-none');
-    }, 3000);
+        this.disabled = true;
+        loader.classList.remove('d-none');
+        text.classList.add('d-none');
+
+        setTimeout(() => {
+            this.disabled = false;
+            loader.classList.add('d-none');
+            text.classList.remove('d-none');
+        }, 3000);
+    });
 });
 </script>
 {% endblock %}
