@@ -32,8 +32,8 @@ class Product(models.Model):
     objects = ActiveProductManager()
 
     class Meta:
-        verbose_name = "فایل دیجیتال"
-        verbose_name_plural = "فایل‌های دیجیتال"
+        verbose_name = "محصولات"
+        verbose_name_plural = "محصولات"
         ordering = ['-created_at']
 
     def __str__(self):

@@ -1,16 +1,154 @@
 {% extends "parents/base.html" %}
-{% block title %}تماس با ما{% endblock %}
+{% load static %}
+
+{% block title %}تماس با ما - فایل‌مارکت{% endblock %}
 
 {% block content %}
-<h2 class="mb-4">تماس با ما</h2>
 
-<div class="col-md-6 mx-auto">
-    <div class="card p-4">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="btn btn-primary w-100">ارسال پیام</button>
-        </form>
+<!-- Contact Hero -->
+<section class="page-hero py-5 bg-gradient-contact text-white">
+    <div class="container text-center">
+        <h1 class="fw-bold mb-3 display-5">تماس با <span class="text-white-emphasis">ما</span></h1>
+        <p class="lead mb-0 opacity-90">
+            هر سوالی داری؟ در چند ثانیه پاسخ می‌گیری
+        </p>
     </div>
-</div>
+</section>
+
+<!-- Contact Content -->
+<section class="py-5 py-md-6">
+    <div class="container">
+        <div class="row justify-content-center gy-5 gy-lg-0">
+
+            <!-- Contact Form -->
+            <div class="col-lg-6">
+                <div class="contact-card position-relative h-100 p-5 rounded-5 shadow-lg bg-white fade-in-up">
+                    <div class="contact-header text-center mb-5">
+                        <div class="contact-icon mb-3 mx-auto">
+                            <i class="bi bi-envelope-check display-4 text-primary"></i>
+                        </div>
+                        <h3 class="fw-bold mb-2">پیام خودت رو بنویس</h3>
+                        <p class="text-muted mb-0">
+                            در کمتر از ۲۴ ساعت پاسخ می‌گیری
+                        </p>
+                    </div>
+
+                    <form method="post" class="nice-contact-form">
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+
+                        <div class="form-row mb-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    {{ form.first_name}}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form.last_name}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row mb-4">
+                            {{ form.email}}
+                        </div>
+
+                        <div class="form-row mb-4">
+                            {{ form.subject}}
+                        </div>
+
+                        <div class="form-row mb-5">
+                            {{ form.message}}
+                        </div>
+
+                        {% if form.errors %}
+                            <div class="alert alert-danger small mb-4">
+                                <i class="bi bi-exclamation-triangle me-2"></i>
+                                لطفاً تمام فیلدها را به درستی پر کنید.
+                            </div>
+                        {% endif %}
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100 nice-btn">
+                            <i class="bi bi-send me-2"></i>
+                            ارسال پیام
+                            <div class="btn-loader d-none">
+                                <span class="spinner-border spinner-border-sm me-2"></span>
+                                در حال ارسال...
+                            </div>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="col-lg-5 col-md-8 ms-auto">
+                <div class="contact-info-card p-5 rounded-5 bg-light shadow-lg h-100 fade-in-up">
+                    <h4 class="fw-bold mb-4">راه‌های ارتباطی سریع</h4>
+
+                    <div class="contact-item mb-4">
+                        <div class="contact-icon-circle bg-primary text-white mb-3">
+                            <i class="bi bi-telephone"></i>
+                        </div>
+                        <h6 class="fw-bold mb-2">تماس تلفنی</h6>
+                        <p class="text-muted mb-2">۰۹xx xxx xx xx</p>
+                        <small class="text-success fw-bold">همه روزه ۹ صبح تا ۱۰ شب</small>
+                    </div>
+
+                    <div class="contact-item mb-4">
+                        <div class="contact-icon-circle bg-success text-white mb-3">
+                            <i class="bi bi-telegram"></i>
+                        </div>
+                        <h6 class="fw-bold mb-2">تلگرام</h6>
+                        <p class="text-muted">@filemarket_support</p>
+                        <small class="text-primary fw-bold">پاسخ فوری</small>
+                    </div>
+
+                    <div class="contact-item mb-4">
+                        <div class="contact-icon-circle bg-warning text-white mb-3">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        <h6 class="fw-bold mb-2">ساعات کاری</h6>
+                        <p class="text-muted mb-0">
+                            شنبه تا پنج‌شنبه: ۹:۰۰ - ۲۲:۰۰<br>
+                            جمعه: ۱۰:۰۰ - ۱۸:۰۰
+                        </p>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="mt-5 pt-4 border-top">
+                        <h6 class="fw-bold mb-3">سوالات متداول</h6>
+                        <div class="d-grid gap-2">
+                            <a href="/faq/" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-question-circle me-2"></i>
+                                مشاهده سوالات متداول
+                            </a>
+                            <a href="/products/" class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-shop me-2"></i>
+                                مشاهده محصولات
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.querySelector('.nice-btn').addEventListener('click', function() {
+    const btn = this;
+    const loader = this.querySelector('.btn-loader');
+
+    btn.disabled = true;
+    loader.classList.remove('d-none');
+
+    // Re-enable after 3 seconds (or handle with real form submission)
+    setTimeout(() => {
+        btn.disabled = false;
+        loader.classList.add('d-none');
+    }, 3000);
+});
+</script>
 {% endblock %}

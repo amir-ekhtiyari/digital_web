@@ -1,22 +1,316 @@
 {% extends "parents/base.html" %}
-{% block title %}سفارش‌ها{% endblock %}
+{% load static %}
+
+{% block title %}سفارش‌های من - فایل‌مارکت{% endblock %}
 
 {% block content %}
-<h2 class="mb-4">سفارش‌های شما</h2>
 
-<table class="table table-striped">
-    <tr>
-        <th>محصول</th>
-        <th>تاریخ</th>
-        <th>وضعیت</th>
-    </tr>
+<!-- Orders Hero -->
+<section class="page-hero py-5 bg-gradient-orders text-white position-relative overflow-hidden">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent p-0 mb-3">
+                <li class="breadcrumb-item"><a href="/" class="text-white-50">خانه</a></li>
+                <li class="breadcrumb-item active text-white" aria-current="page">سفارش‌های من</li>
+            </ol>
+        </nav>
 
-    {% for order in orders %}
-    <tr>
-        <td>{{ order.product.title }}</td>
-        <td>{{ order.created_at }}</td>
-        <td>{{ order.status }}</td>
-    </tr>
-    {% endfor %}
-</table>
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="fw-bold mb-3 display-5">سفارش‌های من</h1>
+                <div class="row align-items-center g-3 mb-0">
+                    <div class="col-auto">
+                        <div class="stat-badge bg-white bg-opacity-20 backdrop-blur rounded-4 px-4 py-2">
+                            <span class="fw-bold fs-5">{{ orders|length }}</span>
+                            <span class="text-white-50">سفارش کل</span>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="stat-badge bg-success bg-opacity-20 backdrop-blur rounded-4 px-4 py-2">
+                            <span class="fw-bold fs-5">{{ paid_orders|length|default:orders|length|add:"-2" }}</span>
+                            <span class="text-white-50">پرداخت شده</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                <div class="orders-controls">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control bg-white border-0 px-4"
+                               placeholder="جستجو در سفارش‌ها..." id="ordersSearch">
+                        <select class="form-select border-0 px-3" id="statusFilter" style="max-width: 150px;">
+                            <option value="">همه وضعیت‌ها</option>
+                            <option value="paid">پرداخت شده</option>
+                            <option value="pending">در انتظار</option>
+                            <option value="cancelled">لغو شده</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Orders Content -->
+<section class="py-5 py-md-6">
+    <div class="container">
+
+        <!-- Orders Header -->
+        <div class="orders-header mb-5 p-4 rounded-4 bg-white shadow-lg">
+            <div class="row align-items-center g-3">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center gap-3">
+                        <button class="btn btn-sm btn-outline-secondary active" data-view="cards">
+                            <i class="bi bi-grid-3x3-gap"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" data-view="table">
+                            <i class="bi bi-table"></i>
+                        </button>
+                        <span class="fw-bold">نمایش: {{ orders|length }} سفارش</span>
+                    </div>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="date-filters d-flex gap-2 justify-content-md-end">
+                        <button class="btn btn-outline-primary btn-sm active" data-date="all">همه</button>
+                        <button class="btn btn-outline-primary btn-sm" data-date="today">امروز</button>
+                        <button class="btn btn-outline-primary btn-sm" data-date="week">هفته</button>
+                        <button class="btn btn-outline-primary btn-sm" data-date="month">ماه</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Container -->
+        <div class="orders-container">
+
+            <!-- Cards View (Default) -->
+            <div class="orders-cards row g-4" id="ordersCards">
+                {% for order in orders %}
+                    <div class="col-xl-4 col-lg-6 col-md-6 order-item fade-in-up"
+                         data-status="{{ order.status|lower }}"
+                         data-product="{{ order.product.title|lower }}">
+                        <div class="order-card h-100 rounded-5 shadow-lg border-0 position-relative overflow-hidden hover-lift">
+
+                            <!-- Order Header -->
+                            <div class="order-header p-4 pb-3 position-relative">
+                                {% if order.status == "paid" %}
+                                    <div class="status-badge position-absolute top-3 start-3 bg-success">
+                                        <i class="bi bi-check-circle-fill"></i> پرداخت شده
+                                    </div>
+                                {% elif order.status == "pending" %}
+                                    <div class="status-badge position-absolute top-3 start-3 bg-warning">
+                                        <i class="bi bi-clock"></i> در انتظار
+                                    </div>
+                                {% endif %}
+
+                                <div class="product-preview rounded-4 overflow-hidden mb-3" style="height: 140px;">
+                                    {% with img=order.product.get_main_image %}
+                                        {% if img %}
+                                            <img src="{{ img.url }}" class="w-100 h-100 object-fit-cover" alt="{{ order.product.title }}">
+                                        {% else %}
+                                            <img src="{% static 'image/placeholder.jpg' %}" class="w-100 h-100 object-fit-cover" alt="عکس محصول">
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+
+                                <h6 class="product-title fw-bold mb-2 text-truncate">{{ order.product.title }}</h6>
+                                <small class="text-muted">{{ order.product.category|default:"عمومی" }}</small>
+                            </div>
+
+                            <!-- Order Details -->
+                            <div class="order-details p-4 pt-0">
+                                <div class="row g-2 mb-4">
+                                    <div class="col-6">
+                                        <small class="text-muted">تاریخ:</small>
+                                        <div class="fw-bold">{{ order.created_at|date:"j F" }}</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted">ساعت:</small>
+                                        <div class="fw-bold">{{ order.created_at|time:"H:i" }}</div>
+                                    </div>
+                                </div>
+
+                                <div class="price-section mb-4">
+                                    <div class="d-flex justify-content-between align-items-baseline">
+                                        <span class="price fw-bold fs-5 text-primary">{{ order.price_display }}</span>
+                                        {% if order.discount %}
+                                            <span class="text-muted text-decoration-line-through small">
+                                                {{ order.original_price|default:order.price_display }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="order-actions">
+                                    {% if order.status == "paid" %}
+                                        <a href="{{ order.product.file.url }}"
+                                           class="btn btn-success w-100 mb-2 download-btn"
+                                           download>
+                                            <i class="bi bi-cloud-arrow-down me-2"></i>
+                                            دانلود
+                                        </a>
+                                        <a href="/orders/{{ order.id }}/" class="btn btn-outline-primary w-100">
+                                            <i class="bi bi-eye me-2"></i>
+                                            جزئیات
+                                        </a>
+                                    {% elif order.status == "pending" %}
+                                        <a href="/orders/{{ order.id }}/pay/" class="btn btn-warning w-100 mb-2">
+                                            <i class="bi bi-credit-card me-2"></i>
+                                            پرداخت
+                                        </a>
+                                    {% else %}
+                                        <a href="/orders/{{ order.id }}/" class="btn btn-outline-secondary w-100">
+                                            <i class="bi bi-info-circle me-2"></i>
+                                            مشاهده
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12">
+                        <div class="empty-state text-center py-8 rounded-5 bg-light border-dashed">
+                            <i class="bi bi-receipt-cutoff display-1 text-muted mb-4"></i>
+                            <h4 class="text-muted mb-3">هیچ سفارشی یافت نشد</h4>
+                            <p class="text-muted mb-4 lead">
+                                اولین خریدت رو از <a href="/products/" class="text-primary fw-bold">محصولات</a> شروع کن
+                            </p>
+                            <a href="/products/" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-shop me-2"></i>
+                                شروع خرید
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Table View (Hidden by default) -->
+            <div class="orders-table d-none" id="ordersTable">
+                <div class="table-responsive rounded-5 shadow-lg overflow-hidden">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th class="text-center py-4">
+                                    <i class="bi bi-box-seam me-2"></i>محصول
+                                </th>
+                                <th class="text-center py-4">
+                                    <i class="bi bi-calendar me-2"></i>تاریخ
+                                </th>
+                                <th class="text-center py-4">
+                                    <i class="bi bi-credit-card me-2"></i>مبلغ
+                                </th>
+                                <th class="text-center py-4">
+                                    <i class="bi bi-info-circle me-2"></i>وضعیت
+                                </th>
+                                <th class="text-center py-4">عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                                <tr class="order-table-row" data-status="{{ order.status|lower }}">
+                                    <td class="text-center py-4">
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            {% with img=order.product.get_main_image %}
+                                                {% if img %}
+                                                    <img src="{{ img.url }}" class="rounded-circle me-3" width="40" height="40" alt="{{ order.product.title }}">
+                                                {% endif %}
+                                            {% endwith %}
+                                            <span class="fw-bold text-truncate d-inline-block" style="max-width: 200px;">
+                                                {{ order.product.title }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center py-4 fw-bold">
+                                        {{ order.created_at|date:"j F Y" }}
+                                        <br><small class="text-muted">{{ order.created_at|time:"H:i" }}</small>
+                                    </td>
+                                    <td class="text-center py-4">
+                                        <span class="fw-bold fs-5 text-primary">{{ order.price_display }}</span>
+                                    </td>
+                                    <td class="text-center py-4">
+                                        <span class="status-badge status-{{ order.status|lower }} px-3 py-2 rounded-pill">
+                                            {{ order.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center py-4">
+                                        {% if order.status == "paid" %}
+                                            <a href="{{ order.product.file.url }}" class="btn btn-success btn-sm px-3" download>
+                                                <i class="bi bi-download"></i>
+                                            </a>
+                                        {% endif %}
+                                        <a href="/orders/{{ order.id }}/" class="btn btn-outline-primary btn-sm px-3 ms-1">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Orders functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Search functionality
+    const searchInput = document.getElementById('ordersSearch');
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        document.querySelectorAll('.order-item, .order-table-row').forEach(item => {
+            const product = item.dataset.product;
+            item.style.display = product.includes(searchTerm) ? 'block' : 'none';
+        });
+    });
+
+    // Status filter
+    document.getElementById('statusFilter').addEventListener('change', function() {
+        const filterValue = this.value;
+        document.querySelectorAll('.order-item, .order-table-row').forEach(item => {
+            if (!filterValue || item.dataset.status === filterValue) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+
+    // View toggle
+    document.querySelectorAll('[data-view]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const view = this.dataset.view;
+            document.querySelectorAll('[data-view]').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            if (view === 'cards') {
+                document.getElementById('ordersCards').classList.remove('d-none');
+                document.getElementById('ordersTable').classList.add('d-none');
+            } else {
+                document.getElementById('ordersCards').classList.add('d-none');
+                document.getElementById('ordersTable').classList.remove('d-none');
+            }
+        });
+    });
+
+    // Download animation
+    document.querySelectorAll('.download-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            icon.classList.remove('bi-cloud-arrow-down');
+            icon.classList.add('bi-arrow-down-circle');
+            setTimeout(() => {
+                icon.classList.add('bi-check-circle-fill', 'text-success');
+                icon.classList.remove('bi-arrow-down-circle');
+            }, 1500);
+        });
+    });
+});
+</script>
 {% endblock %}

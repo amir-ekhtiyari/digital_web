@@ -1,0 +1,164 @@
+{% extends "parents/base.html" %}
+{% load static %}
+
+{% block title %}پروفایل کاربری - فایل‌مارکت{% endblock %}
+
+{% block content %}
+
+<!-- Profile Hero -->
+<section class="page-hero py-5 bg-gradient-profile text-white position-relative overflow-hidden">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="fw-bold mb-3 display-5">پنل کاربری <span class="text-white-emphasis">{{ user.username }}</span></h1>
+                <p class="lead opacity-90 mb-0">
+                    اطلاعات حساب، سفارش‌ها و دانلودهای تو در یک‌جا
+                </p>
+            </div>
+            <div class="col-lg-4 text-end">
+                <div class="profile-stats bg-white bg-opacity-20 backdrop-blur rounded-4 p-4">
+                    <div class="row text-center gy-2">
+                        <div class="col-6">
+                            <div class="h4 fw-bold text-white mb-1">{{ orders_count|default:0 }}</div>
+                            <small class="text-white-50">سفارش</small>
+                        </div>
+                        <div class="col-6">
+                            <div class="h4 fw-bold text-white mb-1">{{ downloads_count|default:0 }}</div>
+                            <small class="text-white-50">دانلود</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Profile Dashboard -->
+<section class="py-5 py-md-6">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <!-- Profile Sidebar -->
+            <div class="col-lg-4 col-md-5 mb-4 mb-lg-0">
+                <div class="profile-sidebar-card sticky-top p-4 p-md-5 rounded-5 shadow-lg bg-white h-100 fade-in-up">
+
+                    <!-- Avatar & Basic Info -->
+                    <div class="text-center mb-5">
+                        <div class="profile-avatar-large mx-auto mb-4 position-relative">
+                            <span class="avatar-letter">{{ user.username|firstupper|slice:":1"|upper }}</span>
+                            <div class="avatar-status bg-success"></div>
+                        </div>
+                        <h3 class="fw-bold mb-2">{{ user.username }}</h3>
+                        <p class="text-muted mb-1">کاربر فعال</p>
+                        <span class="badge bg-success">تأیید شده</span>
+                    </div>
+
+                    <!-- Profile Menu -->
+                    <nav class="profile-nav">
+                        <a href="/accounts/profile/" class="profile-nav-item active">
+                            <i class="bi bi-person-circle me-3"></i>
+                            اطلاعات شخصی
+                        </a>
+                        <a href="/accounts/orders/" class="profile-nav-item">
+                            <i class="bi bi-receipt me-3"></i>
+                            سفارش‌های من
+                        </a>
+                        <a href="/accounts/downloads/" class="profile-nav-item">
+                            <i class="bi bi-cloud-arrow-down me-3"></i>
+                            دانلودهای من
+                        </a>
+                        <a href="/accounts/wishlist/" class="profile-nav-item">
+                            <i class="bi bi-heart me-3"></i>
+                            علاقه‌مندی‌ها
+                        </a>
+                        <div class="dropdown-divider mt-3"></div>
+                        <a href="/accounts/profile/edit/" class="profile-nav-item">
+                            <i class="bi bi-pencil-square me-3"></i>
+                            ویرایش پروفایل
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Profile Content -->
+            <div class="col-lg-8 col-md-7">
+
+                <!-- Profile Header -->
+                <div class="profile-header-card p-5 p-md-6 rounded-5 shadow-lg bg-white mb-4 fade-in-up">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h4 class="fw-bold mb-0">
+                            <i class="bi bi-info-circle me-2 text-primary"></i>
+                            اطلاعات حساب
+                        </h4>
+                        <a href="/accounts/profile/edit/" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-pencil me-1"></i>
+                            ویرایش
+                        </a>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="info-card h-100 p-4 rounded-4 bg-light">
+                                <div class="info-icon bg-primary text-white mb-3">
+                                    <i class="bi bi-person"></i>
+                                </div>
+                                <h6 class="fw-bold mb-2 text-truncate">نام کاربری</h6>
+                                <p class="text-muted mb-0">{{ user.username }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-card h-100 p-4 rounded-4 bg-light">
+                                <div class="info-icon bg-success text-white mb-3">
+                                    <i class="bi bi-envelope"></i>
+                                </div>
+                                <h6 class="fw-bold mb-2 text-truncate">ایمیل</h6>
+                                <p class="text-muted mb-0">{{ user.email|default:"ایمیل ثبت نشده" }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-card h-100 p-4 rounded-4 bg-light">
+                                <div class="info-icon bg-warning text-white mb-3">
+                                    <i class="bi bi-calendar-check"></i>
+                                </div>
+                                <h6 class="fw-bold mb-2">تاریخ عضویت</h6>
+                                <p class="text-muted mb-0">{{ user.date_joined|date:"j F Y" }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-card h-100 p-4 rounded-4 bg-light">
+                                <div class="info-icon bg-info text-white mb-3">
+                                    <i class="bi bi-shield-check"></i>
+                                </div>
+                                <h6 class="fw-bold mb-2">وضعیت حساب</h6>
+                                <p class="text-success fw-bold mb-0">فعال و تأیید شده</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="activity-card p-5 rounded-5 shadow-lg bg-white fade-in-up">
+                    <h4 class="fw-bold mb-4">
+                        <i class="bi bi-clock-history me-2 text-warning"></i>
+                        فعالیت‌های اخیر
+                    </h4>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="activity-item d-flex align-items-center p-3 rounded-4 bg-light">
+                                <div class="activity-icon bg-primary text-white rounded-circle me-3">
+                                    <i class="bi bi-check-circle"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">خوش آمدی به پنل کاربری</h6>
+                                    <small class="text-muted">{{ now|date:"j F Y ساعت H:i" }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

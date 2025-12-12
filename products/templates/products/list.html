@@ -1,46 +1,293 @@
 {% extends "parents/base.html" %}
 {% load static %}
-{% block title %}لیست محصولات{% endblock %}
+
+{% block title %}محصولات - فایل‌مارکت{% endblock %}
 
 {% block content %}
 
-    <h2 class="mb-4">محصولات</h2>
-
-    <div class="row">
-
-        {% for product in products %}
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    {% with img=product.get_main_image %}
-                        {% if img %}
-                            <img src="{{ img.url }}" class="card-img-top" alt="{{ product.title }}">
-                        {% else %}
-                            <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="placeholder">
-                        {% endif %}
-                    {% endwith %}
-
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.title }}</h5>
-                        <p>{{ product.description|truncatewords:15 }}</p>
-                        <a href="/products/{{ product.id }}/" class="btn btn-primary">مشاهده</a>
+<!-- Products Hero -->
+<section class="page-hero py-5 bg-gradient-products text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="fw-bold mb-3 display-5">همه محصولات</h1>
+                <p class="lead opacity-90 mb-0">
+                    {{ products|length }} فایل دیجیتال باکیفیت آماده دانلود
+                </p>
+            </div>
+            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                <div class="search-input-wrapper">
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control bg-white border-0 shadow-sm px-4"
+                               placeholder="جستجو در محصولات..." id="quickSearch">
+                        <button class="btn btn-primary px-4" type="button">
+                            <i class="bi bi-search"></i>
+                        </button>
                     </div>
                 </div>
             </div>
-        {% endfor %}
-
+        </div>
     </div>
+</section>
+
+<!-- Products Content -->
+<section class="py-5 py-md-6">
+    <div class="container">
+        <div class="row">
+
+            <!-- Filters Sidebar -->
+            <div class="col-lg-3 col-md-4 mb-4 mb-lg-0">
+                <div class="filters-card sticky-top p-4 p-md-5 rounded-5 shadow-lg bg-white h-100 fade-in-up">
+                    <h5 class="fw-bold mb-4">
+                        <i class="bi bi-funnel me-2 text-primary"></i>
+                        فیلترها
+                    </h5>
+
+                    <!-- Price Range -->
+                    <div class="filter-group mb-4">
+                        <h6 class="fw-bold mb-3">محدوده قیمت</h6>
+                        <div class="mb-3">
+                            <input type="range" class="form-range" id="priceRange" min="0" max="1000000" value="1000000">
+                            <div class="d-flex justify-content-between small text-muted mt-1">
+                                <span>رایگان</span>
+                                <span id="priceValue">1,000,000 تومان</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="filter-group mb-4">
+                        <h6 class="fw-bold mb-3">دسته‌بندی</h6>
+                        <div class="category-filters">
+                            <a href="#" class="filter-tag active" data-category="all">
+                                <i class="bi bi-grid me-1"></i>همه
+                            </a>
+                            <a href="#" class="filter-tag" data-category="article">
+                                <i class="bi bi-file-earmark-text me-1"></i>مقالات
+                            </a>
+                            <a href="#" class="filter-tag" data-category="book">
+                                <i class="bi bi-book me-1"></i>کتاب
+                            </a>
+                            <a href="#" class="filter-tag" data-category="music">
+                                <i class="bi bi-music-note me-1"></i>موسیقی
+                            </a>
+                            <a href="#" class="filter-tag" data-category="template">
+                                <i class="bi bi-filetype-psd me-1"></i>قالب
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Sort -->
+                    <div class="filter-group">
+                        <h6 class="fw-bold mb-3">مرتب‌سازی</h6>
+                        <select class="form-select" id="sortSelect">
+                            <option>جدیدترین</option>
+                            <option>پرفروش‌ترین</option>
+                            <option>ارزان‌ترین</option>
+                            <option>گران‌ترین</option>
+                            <option>محبوب‌ترین</option>
+                        </select>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Actions -->
+                    <div class="filter-actions">
+                        <button class="btn btn-outline-primary w-100 mb-2" id="clearFilters">
+                            <i class="bi bi-arrow-clockwise me-1"></i>
+                            پاک کردن
+                        </button>
+                        <button class="btn btn-primary w-100" id="applyFilters">
+                            <i class="bi bi-check me-1"></i>
+                            اعمال فیلتر
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="col-lg-9 col-md-8">
+
+                <!-- Products Header -->
+                <div class="products-header d-flex justify-content-between align-items-center mb-4">
+                    <div class="d-flex align-items-center">
+                        <h4 class="fw-bold mb-0 me-3">نتایج</h4>
+                        <span class="badge bg-primary rounded-pill">{{ products|length }} محصول</span>
+                    </div>
+                    <div class="view-toggle">
+                        <button class="btn btn-sm btn-outline-secondary active" data-view="grid">
+                            <i class="bi bi-grid-3x3-gap"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" data-view="list">
+                            <i class="bi bi-list-ul"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="products-grid row g-4" id="productsGrid">
+                    {% for product in products %}
+                        <div class="col-xl-4 col-lg-6 col-md-6 product-item" data-price="{{ product.price|default:0 }}" data-category="{{ product.category|default:'other' }}">
+                            <div class="product-card h-100 position-relative overflow-hidden rounded-4 shadow-lg border-0">
+
+                                <!-- Product Image -->
+                                <div class="product-image-wrapper">
+                                    {% with img=product.get_main_image %}
+                                        {% if img %}
+                                            <img src="{{ img.url }}"
+                                                 class="product-img w-100"
+                                                 alt="{{ product.title }}"
+                                                 loading="lazy">
+                                        {% else %}
+                                            <img src="{% static 'image/placeholder.jpg' %}"
+                                                 class="product-img w-100"
+                                                 alt="عکس محصول"
+                                                 loading="lazy">
+                                        {% endif %}
+                                    {% endwith %}
+
+                                    <!-- Quick Actions -->
+                                    <div class="product-actions">
+                                        <button class="btn-action wishlist-btn" data-product="{{ product.id }}">
+                                            <i class="bi bi-heart"></i>
+                                        </button>
+                                        <button class="btn-action cart-btn" data-product="{{ product.id }}">
+                                            <i class="bi bi-bag"></i>
+                                        </button>
+                                    </div>
+
+                                    <!-- Badges -->
+                                    {% if product.is_new %}
+                                        <div class="product-badge bg-success">جدید</div>
+                                    {% endif %}
+                                    {% if product.discount %}
+                                        <div class="product-badge bg-warning">
+                                            {{ product.discount }}% تخفیف
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Product Info -->
+                                <div class="card-body p-4">
+                                    <h6 class="product-title fw-bold mb-2 text-truncate">{{ product.title }}</h6>
+                                    <p class="product-description text-muted small mb-3">
+                                        {{ product.description|truncatewords:12 }}
+                                    </p>
+
+                                    <!-- Price & Rating -->
+                                    <div class="product-meta d-flex justify-content-between align-items-center mb-3">
+                                        <div class="price-section">
+                                            {% if product.price %}
+                                                <span class="price fw-bold text-primary fs-5">
+                                                    {{ product.price_display }}
+                                                </span>
+                                            {% else %}
+                                                <span class="price badge bg-success fs-6">رایگان</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="rating">
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-half text-warning"></i>
+                                            <small class="text-muted ms-1">(12)</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Action Button -->
+                                    <a href="/products/{{ product.id }}/" class="btn btn-primary w-100 product-btn">
+                                        <i class="bi bi-eye me-2"></i>
+                                        مشاهده جزئیات
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="col-12">
+                            <div class="text-center py-5">
+                                <i class="bi bi-inbox display-1 text-muted mb-4"></i>
+                                <h4 class="text-muted mb-3">محصولی یافت نشد</h4>
+                                <p class="text-muted mb-4">فیلترها را تغییر دهید یا بعداً سر بزنید</p>
+                                <a href="/products/" class="btn btn-primary">
+                                    مشاهده همه محصولات
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination -->
+                {% if products.has_other_pages %}
+                    <nav class="mt-5">
+                        <ul class="pagination justify-content-center">
+                            {% if products.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1">&laquo; اول</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ products.previous_page_number }}">قبلی</a>
+                                </li>
+                            {% endif %}
+
+                            {% for num in products.paginator.page_range %}
+                                {% if products.number == num %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ num }}</span>
+                                    </li>
+                                {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if products.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ products.next_page_number }}">بعدی</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ products.paginator.num_pages }}">آخر &raquo;</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
 
 {% endblock %}
 
-{% comment %}
-قبلاً: <img src="{{ product.image.url }}" class="card-img-top">
-اصلاح ش: اگر تصویر داشت نمایش بده وگرنه placeholder.
-{% endcomment %}
+{% block extra_js %}
+<script>
+// Quick search, filters, and view toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Price slider
+    const priceRange = document.getElementById('priceRange');
+    const priceValue = document.getElementById('priceValue');
 
-{% with img=product.get_main_image %}
-    {% if img %}
-        <img src="{{ img.url }}" class="card-img-top" alt="{{ product.title }}">
-    {% else %}
-        <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="placeholder">
-    {% endif %}
-{% endwith %}
+    priceRange.addEventListener('input', function() {
+        priceValue.textContent = this.value.toLocaleString() + ' تومان';
+    });
+
+    // Category filters
+    document.querySelectorAll('.filter-tag').forEach(tag => {
+        tag.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // Wishlist & Cart buttons
+    document.querySelectorAll('.wishlist-btn, .cart-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.querySelector('i').classList.toggle('bi-heart');
+            this.querySelector('i').classList.toggle('bi-heart-fill');
+        });
+    });
+});
+</script>
+{% endblock %}
