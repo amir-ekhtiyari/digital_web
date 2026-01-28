@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
+from django.core.validators import FileExtensionValidator
+
 
 class ActiveProductManager(models.Manager):
     def active(self):
@@ -19,11 +21,26 @@ class Product(models.Model):
         ('other', 'سایر'),
     )
 
-    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='فروشنده', related_name='products')
+    seller = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name='فروشنده',
+        related_name='products'
+    )
     title = models.CharField(max_length=100, verbose_name='عنوان فایل')
     description = models.TextField(verbose_name='توضیحات')
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, verbose_name='دسته‌بندی')
-    file = models.FileField(upload_to='uploads/', verbose_name='فایل')
+
+    # فایل اصلی برای دانلود محصول (نه عکس کارت)
+    file = models.FileField(
+        upload_to="uploads/",
+        verbose_name="فایل محصول",
+        help_text="فایل اصلی قابل دانلود (مثلاً pdf, zip, mp3).",
+        validators=[FileExtensionValidator(
+            allowed_extensions=["pdf", "zip", "rar", "7z", "mp3", "wav", "png", "jpg", "jpeg"]
+        )],
+    )
+
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='قیمت (تومان)')
     keywords = models.CharField(max_length=200, blank=True, verbose_name='کلمات کلیدی')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
@@ -43,14 +60,8 @@ class Product(models.Model):
         return reverse('products:detail', args=[self.pk])
 
     def get_main_image(self):
-        from django.contrib.contenttypes.models import ContentType
-        from mediafiles.models import Image
-
-        ct = ContentType.objects.get_for_model(self.__class__)
-        img = Image.objects.filter(content_type=ct, object_id=self.pk).first()
-        if img:
-            return img.image
-        return None
+        first = self.images.first()  # related_name="images" از مدل Image
+        return first.image if first else None
 
 
 class DiscountCode(models.Model):

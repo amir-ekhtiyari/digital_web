@@ -131,3 +131,22 @@ JAZZMIN_SETTINGS = {
     "show_ui_builder": False,
     "language_chooser": True,
 }
+
+
+#تنظیمات ایمیل
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "your_email@gmail.com"        # ایمیل خودت
+EMAIL_HOST_PASSWORD = "16_char_app_password"    # رمز اپلیکیشن
+DEFAULT_FROM_EMAIL = "no-reply@yourdomain.com"
+
+
+
+
+
+LOGIN_URL = "accounts:login"
+LOGIN_REDIRECT_URL = "accounts:profile"

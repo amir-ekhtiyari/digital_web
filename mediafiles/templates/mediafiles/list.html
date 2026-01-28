@@ -3,245 +3,278 @@
 
 {% block title %}فایل‌های رایگان - فایل‌مارکت{% endblock %}
 
+{% block hero %}
+<section class="site-hero">
+  <div class="site-hero-bg" style="background-image:
+      linear-gradient(135deg, rgba(15,23,42,.88), rgba(15,23,42,.60)),
+      url('{% static "image/hero.jpg" %}');">
+  </div>
+
+  <div class="container site-hero-content py-5">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <h1 class="fw-bold display-5 mb-2">فایل‌های رایگان</h1>
+        <p class="lead text-white-50 mb-0">
+          {{ files|length }} فایل رسانه‌ای قابل دانلود رایگان
+        </p>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="card bg-white border-0 shadow-sm rounded-4 p-3">
+          <label class="small text-muted mb-2" for="mediaSearch">جستجو</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-0" id="media-addon">
+              <i class="bi bi-search"></i>
+            </span>
+            <input type="text" class="form-control border-0 bg-light"
+                   placeholder="جستجو در فایل‌ها..." id="mediaSearch" aria-describedby="media-addon">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
 {% block content %}
+<section class="py-4 py-lg-5">
+  <div class="container">
 
-<!-- Media Files Hero -->
-<section class="page-hero py-5 bg-gradient-media text-white position-relative overflow-hidden">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <h1 class="fw-bold mb-3 display-5">فایل‌های <span class="text-white-emphasis">رایگان</span></h1>
-                <p class="lead opacity-90 mb-0">
-                    {{ files|length }} فایل رسانه‌ای قابل دانلود رایگان
-                </p>
+    <!-- Stats -->
+    <div class="row g-3 g-lg-4 mb-4">
+      <div class="col-md-3 col-sm-6">
+        <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
+          <div class="d-flex align-items-center gap-3">
+            <div class="stat-icon bg-primary text-white">
+              <i class="bi bi-file-earmark-text"></i>
             </div>
-            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                <div class="search-input-wrapper">
-                    <div class="input-group input-group-lg">
-                        <input type="text" class="form-control bg-white border-0 shadow-sm px-4"
-                               placeholder="جستجو در فایل‌ها..." id="mediaSearch">
-                        <button class="btn btn-primary px-4" type="button">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-                </div>
+            <div>
+              <div class="fw-bold fs-4">{{ files|length }}</div>
+              <div class="text-muted small">فایل کل</div>
             </div>
+          </div>
         </div>
-    </div>
-</section>
+      </div>
 
-<!-- Media Files Content -->
-<section class="py-5 py-md-6">
-    <div class="container">
-        <div class="row justify-content-center">
-
-            <!-- Stats & Filters -->
-            <div class="col-lg-12 mb-5">
-                <div class="row g-4">
-                    <div class="col-md-3 col-sm-6">
-                        <div class="stat-card text-center p-4 rounded-4 bg-white shadow-lg h-100">
-                            <div class="stat-icon bg-primary text-white rounded-3 mx-auto mb-3">
-                                <i class="bi bi-file-earmark-text fs-3"></i>
-                            </div>
-                            <h3 class="fw-bold text-primary mb-1">{{ files|length }}</h3>
-                            <p class="text-muted mb-0">فایل کل</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="stat-card text-center p-4 rounded-4 bg-white shadow-lg h-100">
-                            <div class="stat-icon bg-success text-white rounded-3 mx-auto mb-3">
-                                <i class="bi bi-download fs-3"></i>
-                            </div>
-                            <h3 class="fw-bold text-success mb-1">{{ total_downloads|default:files|length|add:50 }}</h3>
-                            <p class="text-muted mb-0">دانلود شده</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="stat-card text-center p-4 rounded-4 bg-white shadow-lg h-100">
-                            <div class="stat-icon bg-warning text-white rounded-3 mx-auto mb-3">
-                                <i class="bi bi-music-note-list fs-3"></i>
-                            </div>
-                            <h3 class="fw-bold text-warning mb-1">{{ audio_count|default:12 }}</h3>
-                            <p class="text-muted mb-0">فایل صوتی</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="stat-card text-center p-4 rounded-4 bg-white shadow-lg h-100">
-                            <div class="stat-icon bg-info text-white rounded-3 mx-auto mb-3">
-                                <i class="bi bi-images fs-3"></i>
-                            </div>
-                            <h3 class="fw-bold text-info mb-1">{{ image_count|default:8 }}</h3>
-                            <p class="text-muted mb-0">تصاویر</p>
-                        </div>
-                    </div>
-                </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
+          <div class="d-flex align-items-center gap-3">
+            <div class="stat-icon bg-success text-white">
+              <i class="bi bi-download"></i>
             </div>
-
-            <!-- Filters -->
-            <div class="col-lg-12 mb-4">
-                <div class="filters-bar p-4 rounded-4 bg-white shadow-lg">
-                    <div class="row align-items-center g-3">
-                        <div class="col-md-4">
-                            <h6 class="fw-bold mb-2">فیلتر نوع فایل:</h6>
-                            <div class="filter-tags d-flex flex-wrap gap-2">
-                                <a href="#" class="filter-tag active" data-type="all">
-                                    <i class="bi bi-grid me-1"></i>همه
-                                </a>
-                                <a href="#" class="filter-tag" data-type="pdf">
-                                    <i class="bi bi-file-earmark-pdf me-1"></i>PDF
-                                </a>
-                                <a href="#" class="filter-tag" data-type="mp3">
-                                    <i class="bi bi-music-note me-1"></i>موسیقی
-                                </a>
-                                <a href="#" class="filter-tag" data-type="zip">
-                                    <i class="bi bi-file-earmark-zip me-1"></i>Zip
-                                </a>
-                                <a href="#" class="filter-tag" data-type="image">
-                                    <i class="bi bi-image me-1"></i>تصویر
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <h6 class="fw-bold mb-2 d-md-none d-lg-block">مرتب‌سازی:</h6>
-                            <select class="form-select" id="mediaSort">
-                                <option>جدیدترین</option>
-                                <option>بیشترین دانلود</option>
-                                <option>آخرین به‌روزرسانی</option>
-                                <option>اندازه (نزولی)</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4 text-md-end">
-                            <button class="btn btn-outline-secondary btn-sm me-2" id="clearFilters">
-                                <i class="bi bi-arrow-clockwise me-1"></i>پاک کردن
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div>
+              <div class="fw-bold fs-4">{{ total_downloads|default:files|length|add:50 }}</div>
+              <div class="text-muted small">دانلود شده</div>
             </div>
-
-            <!-- Files Grid -->
-            <div class="col-lg-12">
-                <div class="files-grid" id="filesGrid">
-                    {% for file in files %}
-                        <div class="file-item mb-4 fade-in-up" data-type="{{ file.file_extension|lower }}" data-size="{{ file.file_size|default:0 }}">
-                            <div class="file-card h-100 p-4 rounded-4 shadow-lg border-0 position-relative overflow-hidden hover-lift">
-
-                                <!-- File Icon -->
-                                <div class="file-icon-wrapper mb-4 text-center">
-                                    <div class="file-icon rounded-4 p-4 mx-auto position-relative">
-                                        <i class="bi {% if 'pdf' in file.file_extension|lower %}bi-file-earmark-pdf{% elif 'mp3' in file.file_extension|lower %}bi-music-note-list{% elif 'zip' in file.file_extension|lower %}bi-file-earmark-zip{% elif 'jpg' in file.file_extension|lower or 'png' in file.file_extension|lower %}bi-image{% else %}bi-file-earmark-text{% endif %} display-2 text-white"></i>
-                                        <div class="file-badge">
-                                            {{ file.file_extension|upper }}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- File Info -->
-                                <div class="file-info">
-                                    <h6 class="file-title fw-bold mb-2 text-truncate">{{ file.title }}</h6>
-                                    <p class="file-description text-muted small mb-3">
-                                        {{ file.description|truncatewords:15 }}
-                                    </p>
-
-                                    <!-- File Meta -->
-                                    <div class="file-meta d-flex justify-content-between align-items-center mb-4">
-                                        <div class="file-size small text-muted">
-                                            <i class="bi bi-hdd-network me-1"></i>
-                                            {{ file.file_size|default:"نامشخص" }}
-                                        </div>
-                                        <div class="file-downloads small text-success fw-bold">
-                                            <i class="bi bi-download me-1"></i>
-                                            {{ file.downloads_count|default:0 }} دانلود
-                                        </div>
-                                    </div>
-
-                                    <!-- Download Button -->
-                                    <div class="file-actions">
-                                        <a href="{{ file.file.url }}"
-                                           class="btn btn-primary w-100 download-btn"
-                                           download>
-                                            <i class="bi bi-download me-2"></i>
-                                            دانلود رایگان
-                                            <span class="download-count small ms-2">
-                                                ({{ file.downloads_count|default:0 }})
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <!-- Preview Badge -->
-                                {% if file.preview_available %}
-                                    <div class="preview-badge position-absolute top-4 start-4">
-                                        <i class="bi bi-eye"></i>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    {% empty %}
-                        <div class="col-12 text-center py-5">
-                            <div class="empty-state p-5 rounded-4 bg-light">
-                                <i class="bi bi-folder-x display-1 text-muted mb-4"></i>
-                                <h4 class="text-muted mb-3">هیچ فایلی یافت نشد</h4>
-                                <p class="text-muted mb-4">به‌زودی فایل‌های رایگان اضافه می‌شود</p>
-                                <a href="/products/" class="btn btn-primary">
-                                    <i class="bi bi-shop me-2"></i>
-                                    مشاهده محصولات پولی
-                                </a>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
+          </div>
         </div>
-    </div>
-</section>
+      </div>
 
+      <div class="col-md-3 col-sm-6">
+        <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
+          <div class="d-flex align-items-center gap-3">
+            <div class="stat-icon bg-warning text-dark">
+              <i class="bi bi-music-note-list"></i>
+            </div>
+            <div>
+              <div class="fw-bold fs-4">{{ audio_count|default:12 }}</div>
+              <div class="text-muted small">فایل صوتی</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-6">
+        <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
+          <div class="d-flex align-items-center gap-3">
+            <div class="stat-icon bg-info text-white">
+              <i class="bi bi-images"></i>
+            </div>
+            <div>
+              <div class="fw-bold fs-4">{{ image_count|default:8 }}</div>
+              <div class="text-muted small">تصاویر</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters bar -->
+    <div class="card border-0 shadow-sm rounded-4 p-3 p-lg-4 mb-4">
+      <div class="row g-3 align-items-center">
+
+        <div class="col-lg-6">
+          <div class="fw-bold mb-2">فیلتر نوع فایل</div>
+          <div class="d-flex flex-wrap gap-2">
+            <button type="button" class="filter-tag active" data-type="all">همه</button>
+            <button type="button" class="filter-tag" data-type="pdf">PDF</button>
+            <button type="button" class="filter-tag" data-type="mp3">موسیقی</button>
+            <button type="button" class="filter-tag" data-type="zip">Zip</button>
+            <button type="button" class="filter-tag" data-type="image">تصویر</button>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <label class="fw-bold mb-2 d-block" for="mediaSort">مرتب‌سازی</label>
+          <select class="form-select" id="mediaSort">
+            <option value="new">جدیدترین</option>
+            <option value="downloads">بیشترین دانلود</option>
+            <option value="size_desc">اندازه (نزولی)</option>
+          </select>
+        </div>
+
+        <div class="col-lg-2 d-grid">
+          <button class="btn btn-outline-secondary" id="clearFilters" type="button">
+            <i class="bi bi-arrow-clockwise ms-1"></i> پاک کردن
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Files grid -->
+    <div class="row g-3 g-lg-4" id="filesGrid">
+      {% for file in files %}
+        {% with ext=file.file_extension|lower %}
+        <div class="col-xl-4 col-lg-6 file-item"
+             data-type="{% if 'jpg' in ext or 'png' in ext %}image{% else %}{{ ext }}{% endif %}"
+             data-size="{{ file.file_size|default:0 }}"
+             data-downloads="{{ file.downloads_count|default:0 }}">
+          <div class="card border-0 shadow-sm rounded-4 p-3 h-100 file-card">
+
+            <div class="d-flex align-items-start justify-content-between gap-2 mb-3">
+              <div class="d-flex align-items-center gap-3">
+                <div class="file-type-icon">
+                  <i class="bi
+                    {% if 'pdf' in ext %}bi-file-earmark-pdf
+                    {% elif 'mp3' in ext %}bi-music-note-list
+                    {% elif 'zip' in ext %}bi-file-earmark-zip
+                    {% elif 'jpg' in ext or 'png' in ext %}bi-image
+                    {% else %}bi-file-earmark-text{% endif %}"></i>
+                </div>
+                <div>
+                  <h6 class="fw-bold mb-1 text-truncate">{{ file.title }}</h6>
+                  <div class="small text-muted">{{ ext|upper }}</div>
+                </div>
+              </div>
+
+              {% if file.preview_available %}
+                <span class="badge text-bg-light border">
+                  <i class="bi bi-eye ms-1"></i>پیش‌نمایش
+                </span>
+              {% endif %}
+            </div>
+
+            <p class="text-muted small mb-3">
+              {{ file.description|truncatewords:15 }}
+            </p>
+
+            <div class="d-flex justify-content-between align-items-center small text-muted mb-3">
+              <span><i class="bi bi-hdd-network ms-1"></i>{{ file.file_size|default:"نامشخص" }}</span>
+              <span class="text-success fw-semibold"><i class="bi bi-download ms-1"></i>{{ file.downloads_count|default:0 }}</span>
+            </div>
+
+            <a href="{{ file.file.url }}" class="btn btn-primary w-100 download-btn" download>
+              <span class="download-btn-text">
+                <i class="bi bi-download ms-2"></i> دانلود رایگان
+              </span>
+              <span class="download-btn-loader d-none">
+                <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+                در حال دانلود...
+              </span>
+            </a>
+
+          </div>
+        </div>
+        {% endwith %}
+      {% empty %}
+        <div class="col-12">
+          <div class="text-center py-5 bg-light rounded-4 border">
+            <i class="bi bi-folder-x display-6 text-muted mb-3"></i>
+            <h5 class="text-muted mb-2">هیچ فایلی یافت نشد</h5>
+            <p class="text-muted mb-4">به‌زودی فایل‌های رایگان اضافه می‌شود.</p>
+            <a href="/products/" class="btn btn-primary">
+              <i class="bi bi-shop ms-2"></i> مشاهده محصولات پولی
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-// Media files search and filter functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Search functionality
-    const searchInput = document.getElementById('mediaSearch');
-    searchInput.addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        document.querySelectorAll('.file-item').forEach(item => {
-            const title = item.querySelector('.file-title').textContent.toLowerCase();
-            item.style.display = title.includes(searchTerm) ? 'block' : 'none';
-        });
+document.addEventListener('DOMContentLoaded', function () {
+  const searchInput = document.getElementById('mediaSearch');
+  const sortSelect = document.getElementById('mediaSort');
+  const clearBtn = document.getElementById('clearFilters');
+  const items = () => Array.from(document.querySelectorAll('.file-item'));
+
+  let activeType = 'all';
+
+  function applyFilters() {
+    const q = (searchInput?.value || '').trim().toLowerCase();
+
+    items().forEach(item => {
+      const title = (item.querySelector('h6')?.textContent || '').toLowerCase();
+      const type = item.dataset.type || '';
+      const okType = (activeType === 'all') || (type === activeType);
+      const okSearch = !q || title.includes(q);
+      item.style.display = (okType && okSearch) ? '' : 'none';
+    });
+  }
+
+  function applySort() {
+    const grid = document.getElementById('filesGrid');
+    if (!grid) return;
+
+    const val = sortSelect?.value || 'new';
+    const arr = items();
+
+    arr.sort((a, b) => {
+      if (val === 'downloads') return Number(b.dataset.downloads || 0) - Number(a.dataset.downloads || 0);
+      if (val === 'size_desc') return Number(b.dataset.size || 0) - Number(a.dataset.size || 0);
+      return 0; // new: ترتیب دیتابیس
     });
 
-    // Filter tags
-    document.querySelectorAll('.filter-tag').forEach(tag => {
-        tag.addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
+    arr.forEach(el => grid.appendChild(el));
+  }
 
-            const filterType = this.dataset.type;
-            document.querySelectorAll('.file-item').forEach(item => {
-                if (filterType === 'all' || item.dataset.type === filterType) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        });
+  document.querySelectorAll('.filter-tag').forEach(btn => {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      activeType = this.dataset.type || 'all';
+      applyFilters();
     });
+  });
 
-    // Download button animation
-    document.querySelectorAll('.download-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>در حال دانلود...';
-            setTimeout(() => {
-                this.innerHTML = '<i class="bi bi-check-circle-fill me-2 text-success"></i>دانلود کامل!';
-                setTimeout(() => {
-                    this.innerHTML = '<i class="bi bi-download me-2"></i>دانلود رایگان<span class="download-count small ms-2">(12)</span>';
-                }, 2000);
-            }, 1500);
-        });
+  if (searchInput) searchInput.addEventListener('input', applyFilters);
+  if (sortSelect) sortSelect.addEventListener('change', applySort);
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function () {
+      activeType = 'all';
+      document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+      document.querySelector('.filter-tag[data-type="all"]')?.classList.add('active');
+      if (searchInput) searchInput.value = '';
+      if (sortSelect) sortSelect.value = 'new';
+      applyFilters();
     });
+  }
+
+  // button loader (UI only)
+  document.querySelectorAll('.download-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const t = this.querySelector('.download-btn-text');
+      const l = this.querySelector('.download-btn-loader');
+      if (t && l) { t.classList.add('d-none'); l.classList.remove('d-none'); }
+      setTimeout(() => { if (t && l) { t.classList.remove('d-none'); l.classList.add('d-none'); } }, 1500);
+    });
+  });
 });
 </script>
 {% endblock %}

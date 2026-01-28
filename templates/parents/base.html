@@ -1,246 +1,46 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}دانلود فایل‌های باکیفیت{% endblock %}</title>
+  <meta charset="UTF-8">
+  <title>{% block title %}دانلود فایل‌های باکیفیت{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Bootstrap RTL -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
-
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  {% block extra_css %}{% endblock %}
 </head>
 
 <body class="d-flex flex-column min-vh-100 bg-light">
 
-<header class="shadow-sm bg-white">
-    <!-- Top info bar -->
-    <div class="border-bottom small bg-dark text-light py-1">
-        <div class="container d-flex justify-content-between align-items-center">
-            <span>
-                <i class="bi bi-cloud-arrow-down-fill ms-1"></i>
-                دانلود سریع و امن فایل‌های دیجیتال
-            </span>
-            <span class="d-none d-md-inline">
-                <i class="bi bi-shield-check ms-1"></i>
-                پرداخت امن و پشتیبانی ۲۴ ساعته
-            </span>
-        </div>
-    </div>
+  {% include "partials/header.html" %}
 
-    <!-- Main navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
-        <div class="container">
+  <main class="flex-grow-1">
+    <div class="container py-4 py-md-5">
 
-            <!-- Brand -->
-            <a href="/" class="navbar-brand d-flex align-items-center">
-                <span class="brand-logo rounded-3 d-flex align-items-center justify-content-center me-2">
-                    <i class="bi bi-cloud-arrow-down-fill fs-4"></i>
-                </span>
-                <div class="d-flex flex-column">
-                    <span class="fw-bold">فایل‌مارکت</span>
-                    <small class="text-muted d-none d-sm-inline">مرجع فایل‌های دیجیتال باکیفیت</small>
-                </div>
-            </a>
-
-            <!-- Toggler -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Links -->
-            <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
-
-                    <li class="nav-item">
-                        <a class="nav-link nav-pill" href="/products/">
-                            <i class="bi bi-bag ms-1"></i>محصولات
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link nav-pill" href="/mediafiles/">
-                            <i class="bi bi-folder2-open ms-1"></i>فایل‌ها
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link nav-pill" href="/about/">
-                            <i class="bi bi-info-circle ms-1"></i>درباره ما
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link nav-pill" href="/contact/">
-                            <i class="bi bi-envelope ms-1"></i>تماس
-                        </a>
-                    </li>
-
-                    <li><span class="vr d-none d-lg-inline mx-2"></span></li>
-
-                    {% if user.is_authenticated %}
-                        <!-- user dropdown -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle d-flex align-items-center px-2"
-                               href="#" id="userMenu"
-                               role="button"
-                               data-bs-toggle="dropdown"
-                               aria-expanded="false">
-                                <span class="d-none d-md-inline small ms-2">
-                                    {{ user.get_username }}
-                                </span>
-                                <span class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
-                                      style="width:32px;height:32px;">
-                                    <i class="bi bi-person-fill"></i>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4"
-                                aria-labelledby="userMenu" style="min-width: 220px;">
-                                <li>
-                                    <a class="dropdown-item py-3 px-4" href="{% url 'accounts:profile' %}">
-                                        <i class="bi bi-person-badge ms-3"></i>
-                                        <span>پروفایل</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item py-3 px-4" href="/orders/">
-                                        <i class="bi bi-receipt ms-3"></i>
-                                        <span>سفارش‌های من</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item py-3 px-4" href="/accounts/downloads/">
-                                        <i class="bi bi-cloud-arrow-down ms-3"></i>
-                                        <span>دانلودهای من</span>
-                                    </a>
-                                </li>
-                                <li><hr class="dropdown-divider mx-3 my-0"></li>
-                                <li>
-                                    <a class="dropdown-item py-3 px-4 text-danger" href="{% url 'accounts:logout' %}">
-                                        <i class="bi bi-box-arrow-left ms-3"></i>
-                                        <span>خروج</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    {% else %}
-                        <!-- login / signup button -->
-                        <li class="nav-item ms-lg-3">
-                            <a class="btn btn-outline-primary btn-sm px-3 py-2" href="{% url 'accounts:login' %}">
-                                <i class="bi bi-box-arrow-in-right ms-1"></i>
-                                ورود / ثبت‌نام
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
+      {# Messages: یک‌بار برای کل سایت [web:50] #}
+      {% if messages %}
+        <div class="mb-3">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} mb-2" role="alert">
+              {{ message }}
             </div>
-
+          {% endfor %}
         </div>
-    </nav>
+      {% endif %}
 
-    {% block hero %}{% endblock hero %}
-</header>
-
-<main class="flex-grow-1">
-    <div class="container my-4 my-md-5">
-        {% block content %}{% endblock %}
+      {% block content %}{% endblock %}
     </div>
-</main>
+  </main>
 
-<footer class="site-footer mt-auto text-light">
-    <div class="footer-top py-4 py-md-5">
-        <div class="container">
-            <div class="row gy-4">
+  {% include "partials/footer.html" %}
 
-                <div class="col-md-4">
-                    <h5 class="fw-bold mb-3">فایل‌مارکت</h5>
-                    <p class="small mb-3">
-                        تلاش ما ارائه بهترین فایل‌های دیجیتال با بالاترین کیفیت و مناسب‌ترین قیمت است؛
-                        از مقالات و کتاب‌ها تا موسیقی، تصاویر و قالب‌های آماده.
-                    </p>
-                    <div class="d-flex gap-2">
-                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle">
-                            <i class="bi bi-telegram"></i>
-                        </a>
-                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle">
-                            <i class="bi bi-instagram"></i>
-                        </a>
-                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle">
-                            <i class="bi bi-whatsapp"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-6 col-md-2">
-                    <h6 class="fw-bold mb-3">لینک‌های مفید</h6>
-                    <ul class="list-unstyled small">
-                        <li class="mb-2"><a href="/about/" class="footer-link">درباره ما</a></li>
-                        <li class="mb-2"><a href="/contact/" class="footer-link">پشتیبانی</a></li>
-                        <li class="mb-2"><a href="/terms/" class="footer-link">قوانین و مقررات</a></li>
-                        <li class="mb-2"><a href="/faq/" class="footer-link">سوالات متداول</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-6 col-md-3">
-                    <h6 class="fw-bold mb-3">دسته‌بندی‌ها</h6>
-                    <ul class="list-unstyled small">
-                        <li class="mb-2"><a href="/products/?category=article" class="footer-link">مقالات و تحقیق‌ها</a></li>
-                        <li class="mb-2"><a href="/products/?category=book" class="footer-link">کتاب و جزوه</a></li>
-                        <li class="mb-2"><a href="/products/?category=music" class="footer-link">موسیقی و صوت</a></li>
-                        <li class="mb-2"><a href="/products/?category=template" class="footer-link">قالب و گرافیک</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-md-3">
-                    <h6 class="fw-bold mb-3">تماس با ما</h6>
-                    <ul class="list-unstyled small mb-3">
-                        <li class="mb-2">
-                            <i class="bi bi-geo-alt ms-1"></i>ایران، ...
-                        </li>
-                        <li class="mb-2">
-                            <i class="bi bi-telephone ms-1"></i>۰۹xx xxx xx xx
-                        </li>
-                        <li class="mb-2">
-                            <i class="bi bi-envelope ms-1"></i>info@example.com
-                        </li>
-                    </ul>
-                    <p class="small text-muted mb-0">
-                        پاسخگوی شما در تمامی روزهای هفته هستیم.
-                    </p>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="footer-bottom border-top border-secondary-subtle py-3 small">
-        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-            <span>
-                طراحی و توسعه توسط <b>مانی و امیر</b> — © 2025
-            </span>
-            <span class="text-muted">
-                تمام حقوق این وب‌سایت محفوظ است.
-            </span>
-        </div>
-    </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-{% block extra_js %}{% endblock %}
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  {% block extra_js %}{% endblock %}
 </body>
 </html>

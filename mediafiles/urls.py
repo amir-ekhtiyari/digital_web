@@ -5,4 +5,5 @@ app_name = "mediafiles"
 
 urlpatterns = [
     path("", views.gallery_view, name="mediafiles"),
+    path("downloads/", views.downloads_view, name="downloads"),
 ]

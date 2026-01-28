@@ -1,260 +1,132 @@
 {% extends "parents/base.html" %}
 {% load static %}
 
-{% block title %}سفارش #{{ order.id }} - فایل‌مارکت{% endblock %}
+{% block title %}سفارش #{{ order.id }} | فایل‌مارکت{% endblock %}
 
-{% block content %}
-
-<!-- Order Hero -->
-<section class="page-hero py-5 bg-gradient-order text-white position-relative overflow-hidden">
-    <div class="container">
+{% block hero %}
+<section class="page-hero bg-gradient-order mb-4">
+    <div class="container py-5">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent p-0 mb-3">
-                <li class="breadcrumb-item"><a href="/" class="text-white-50">خانه</a></li>
-                <li class="breadcrumb-item"><a href="/accounts/profile/" class="text-white-50">پنل کاربری</a></li>
-                <li class="breadcrumb-item"><a href="/accounts/orders/" class="text-white-50">سفارش‌ها</a></li>
-                <li class="breadcrumb-item active text-white" aria-current="page">سفارش #{{ order.id }}</li>
+                <li class="breadcrumb-item">
+                    <a href="/" class="text-white-50">خانه</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/accounts/orders/" class="text-white-50">سفارش‌ها</a>
+                </li>
+                <li class="breadcrumb-item active text-white">
+                    سفارش #{{ order.id }}
+                </li>
             </ol>
         </nav>
 
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <h1 class="fw-bold mb-2 display-4">سفارش شماره #{{ order.id }}</h1>
-                <div class="d-flex align-items-center gap-3 mb-0">
-                    <span class="badge bg-light text-dark px-3 py-2 fs-6">
-                        {{ order.created_at|date:"j F Y" }}
-                    </span>
-                    <span class="order-status-badge status-{{ order.status|lower }}">
-                        {{ order.get_status_display }}
-                    </span>
-                    <span class="text-white-50 fs-6">{{ order.product.category|default:"عمومی" }}</span>
-                </div>
-            </div>
-            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                <div class="order-actions">
-                    <button class="btn btn-outline-light btn-sm me-2" onclick="printInvoice()">
-                        <i class="bi bi-printer me-1"></i>چاپ فاکتور
-                    </button>
-                    <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#invoiceModal">
-                        <i class="bi bi-file-earmark-text me-1"></i>مشاهده فاکتور
-                    </button>
-                </div>
-            </div>
-        </div>
+        <h1 class="fw-bold mb-2">
+            سفارش شماره #{{ order.id }}
+        </h1>
+        <span class="badge rounded-pill px-3 py-2
+            {% if order.status == 'paid' %} bg-success
+            {% elif order.status == 'pending' %} bg-warning text-dark
+            {% else %} bg-secondary {% endif %}">
+            {{ order.get_status_display }}
+        </span>
     </div>
 </section>
+{% endblock hero %}
 
-<!-- Order Details -->
-<section class="py-5 py-md-6">
-    <div class="container">
-        <div class="row justify-content-center g-5">
+{% block content %}
 
-            <!-- Order Summary -->
-            <div class="col-lg-8">
+<div class="row g-4 g-lg-5">
 
-                <!-- Product Details -->
-                <div class="order-product-card p-5 rounded-5 shadow-xl bg-white mb-5 fade-in-up">
-                    <div class="row align-items-center g-4">
-                        <div class="col-md-3">
-                            <div class="product-thumbnail rounded-4 overflow-hidden shadow">
-                                {% with img=order.product.get_main_image %}
-                                    {% if img %}
-                                        <img src="{{ img.url }}" class="w-100 h-100" alt="{{ order.product.title }}">
-                                    {% else %}
-                                        <img src="{% static 'image/placeholder.jpg' %}" class="w-100 h-100" alt="عکس محصول">
-                                    {% endif %}
-                                {% endwith %}
-                            </div>
-                        </div>
-                        <div class="col-md-9">
-                            <h3 class="fw-bold mb-3">{{ order.product.title }}</h3>
-                            <div class="row g-3 mb-4">
-                                <div class="col-md-6">
-                                    <div class="info-item">
-                                        <span class="info-label">دسته‌بندی:</span>
-                                        <span class="info-value badge bg-light text-dark">{{ order.product.category|default:"عمومی" }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="info-item">
-                                        <span class="info-label">حجم فایل:</span>
-                                        <span class="info-value">{{ order.product.file_size|default:"نامشخص" }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="price-section">
-                                    <span class="price-discount text-muted text-decoration-line-through">
-                                        {{ order.original_price|default:order.price_display }}
-                                    </span>
-                                    <span class="price-final fw-bold fs-4 text-primary">
-                                        {{ order.price_display }}
-                                    </span>
-                                </div>
-                                {% if order.status == "paid" %}
-                                    <a href="{{ order.product.file.url }}"
-                                       class="btn btn-success btn-lg px-5 download-btn"
-                                       download>
-                                        <i class="bi bi-cloud-arrow-down me-2"></i>
-                                        دانلود فوری
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- Main -->
+    <div class="col-lg-8">
+        <div class="card rounded-5 shadow-lg border-0 p-4 p-md-5">
 
-                <!-- Order Timeline -->
-                <div class="order-timeline-card p-5 rounded-5 shadow-lg bg-white fade-in-up">
-                    <h4 class="fw-bold mb-4">
-                        <i class="bi bi-clock-history me-2 text-primary"></i>
-                        مراحل سفارش
-                    </h4>
-
-                    <div class="timeline">
-                        <div class="timeline-item active">
-                            <div class="timeline-icon bg-success">
-                                <i class="bi bi-check-circle-fill"></i>
-                            </div>
-                            <div class="timeline-content">
-                                <h6 class="fw-bold mb-1">سفارش ثبت شد</h6>
-                                <small class="text-muted">{{ order.created_at|date:"j F Y, H:i" }}</small>
-                            </div>
-                        </div>
-
-                        {% if order.status == "paid" %}
-                            <div class="timeline-item active">
-                                <div class="timeline-icon bg-primary">
-                                    <i class="bi bi-credit-card-fill"></i>
-                                </div>
-                                <div class="timeline-content">
-                                    <h6 class="fw-bold mb-1">پرداخت موفق</h6>
-                                    <small class="text-muted">{{ order.paid_at|date:"j F Y, H:i"|default:"چند دقیقه پیش" }}</small>
-                                </div>
-                            </div>
-                            <div class="timeline-item active">
-                                <div class="timeline-icon bg-success">
-                                    <i class="bi bi-download"></i>
-                                </div>
-                                <div class="timeline-content">
-                                    <h6 class="fw-bold mb-1">آماده دانلود</h6>
-                                    <small class="text-success fw-bold">دانلود نامحدود</small>
-                                </div>
-                            </div>
+            <div class="d-flex align-items-center mb-4">
+                <div class="product-thumb rounded-4 overflow-hidden me-3" style="width:80px;height:80px;">
+                    {% with img=order.product.get_main_image %}
+                        {% if img %}
+                            <img src="{{ img.url }}" class="w-100 h-100 object-fit-cover">
                         {% else %}
-                            <div class="timeline-item pending">
-                                <div class="timeline-icon bg-warning">
-                                    <i class="bi bi-clock"></i>
-                                </div>
-                                <div class="timeline-content">
-                                    <h6 class="fw-bold mb-1">در انتظار پرداخت</h6>
-                                    <small class="text-muted">لطفاً پرداخت را تکمیل کنید</small>
-                                </div>
-                            </div>
+                            <img src="{% static 'image/placeholder.jpg' %}">
                         {% endif %}
+                    {% endwith %}
+                </div>
+                <div>
+                    <h4 class="fw-bold mb-1">{{ order.product.title }}</h4>
+                    <small class="text-muted">
+                        {{ order.product.category|default:"عمومی" }}
+                    </small>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row mb-4">
+                <div class="col-6">
+                    <small class="text-muted">تاریخ ثبت</small>
+                    <div class="fw-bold">
+                        {{ order.created_at|date:"j F Y" }}
+                    </div>
+                </div>
+                <div class="col-6 text-end">
+                    <small class="text-muted">ساعت</small>
+                    <div class="fw-bold">
+                        {{ order.created_at|time:"H:i" }}
                     </div>
                 </div>
             </div>
 
-            <!-- Order Sidebar -->
-            <div class="col-lg-4">
-
-                <!-- Invoice Summary -->
-                <div class="invoice-card sticky-top p-5 rounded-5 shadow-xl bg-gradient-light h-100 fade-in-up" style="top: 2rem;">
-                    <div class="text-center mb-4">
-                        <h5 class="fw-bold mb-2">خلاصه فاکتور</h5>
-                        <div class="invoice-id badge bg-primary fs-6 px-3 py-2">
-                            #{{ order.id }}
-                        </div>
-                    </div>
-
-                    <div class="invoice-details">
-                        <div class="invoice-row mb-3">
-                            <span class="invoice-label">محصول:</span>
-                            <span class="invoice-value fw-bold">{{ order.product.title|truncatechars:30 }}</span>
-                        </div>
-                        <div class="invoice-row mb-3">
-                            <span class="invoice-label">قیمت واحد:</span>
-                            <span class="invoice-value text-primary fw-bold">{{ order.price_display }}</span>
-                        </div>
-                        <div class="invoice-row mb-4">
-                            <span class="invoice-label">تعداد:</span>
-                            <span class="invoice-value">1</span>
-                        </div>
-                        <hr>
-                        <div class="invoice-total mb-4">
-                            <span class="invoice-label fw-bold fs-5">جمع کل:</span>
-                            <span class="invoice-value text-success fs-4 fw-bold">{{ order.price_display }}</span>
-                        </div>
-
-                        {% if order.status == "pending" %}
-                            <a href="/orders/{{ order.id }}/pay/" class="btn btn-warning w-100 mb-3">
-                                <i class="bi bi-credit-card me-2"></i>
-                                پرداخت آنلاین
-                            </a>
-                        {% endif %}
-
-                        <!-- Quick Actions -->
-                        <div class="quick-actions-list">
-                            <a href="#" class="action-item d-flex align-items-center mb-3">
-                                <i class="bi bi-printer text-primary me-2"></i>
-                                <span>چاپ فاکتور</span>
-                            </a>
-                            <a href="#" class="action-item d-flex align-items-center mb-3">
-                                <i class="bi bi-share text-info me-2"></i>
-                                <span>اشتراک‌گذاری</span>
-                            </a>
-                            <a href="/accounts/support/" class="action-item d-flex align-items-center">
-                                <i class="bi bi-headset text-success me-2"></i>
-                                <span>تماس با پشتیبانی</span>
-                            </a>
-                        </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <small class="text-muted">مبلغ پرداختی</small>
+                    <div class="fw-bold fs-4 text-primary">
+                        {{ order.price_display }}
                     </div>
                 </div>
+
+                {% if order.status == "paid" %}
+                    <a href="{{ order.product.file.url }}"
+                       class="btn btn-success btn-lg"
+                       download>
+                        <i class="bi bi-download ms-2"></i>
+                        دانلود فایل
+                    </a>
+                {% endif %}
             </div>
+
         </div>
     </div>
-</section>
 
-<!-- Invoice Modal -->
-<div class="modal fade" id="invoiceModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content rounded-5 shadow-xl">
-            <div class="modal-header border-0">
-                <h5 class="modal-title fw-bold">فاکتور رسمی</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <div class="card rounded-5 shadow-lg border-0 p-4 sticky-top" style="top:2rem">
+
+            <h5 class="fw-bold mb-4">
+                عملیات سریع
+            </h5>
+
+            <div class="d-grid gap-3">
+                {% if order.status == "pending" %}
+                    <a href="/orders/{{ order.id }}/pay/"
+                       class="btn btn-warning">
+                        پرداخت آنلاین
+                    </a>
+                {% endif %}
+
+                <a href="{% url 'contact:form' %}"
+                   class="btn btn-outline-primary">
+                    تماس با پشتیبانی
+                </a>
+
+                <a href="/accounts/orders/"
+                   class="btn btn-outline-secondary">
+                    بازگشت به سفارش‌ها
+                </a>
             </div>
-            <div class="modal-body p-5">
-                <!-- Invoice content will be here -->
-                <div class="text-center mb-5">
-                    <h3 class="fw-bold text-primary mb-2">فایل‌مارکت</h3>
-                    <p class="text-muted mb-4">فاکتور شماره #{{ order.id }}</p>
-                    <div class="invoice-bar bg-primary rounded-pill mx-auto mb-4" style="width: 80px; height: 6px;"></div>
-                </div>
-                <!-- Add more invoice details -->
-            </div>
+
         </div>
     </div>
+
 </div>
 
-{% endblock %}
-
-{% block extra_js %}
-<script>
-// Download animation
-document.querySelectorAll('.download-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        const originalText = this.innerHTML;
-        this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>در حال آماده‌سازی...';
-        setTimeout(() => {
-            this.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>دانلود آغاز شد!';
-        }, 1500);
-    });
-});
-
-// Print functionality
-function printInvoice() {
-    window.print();
-}
-</script>
 {% endblock %}

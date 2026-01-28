@@ -1,40 +1,107 @@
-/* =======================
-   Reset & Global
-======================= */
-* {
-    margin: 0;
-    padding: 0;
+/* ==========================================================================
+   FileMarket - base.css
+   هدف: طراحی یکپارچه + override های سبک Bootstrap + استایل صفحات (login/profile/...)
+   نکته: این فایل باید بعد از bootstrap.min.css لود شود تا overrideها اعمال شوند. [web:124]
+========================================================================== */
+
+/* ==========================================================================
+   1) CSS Reset + Global Defaults
+========================================================================== */
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
 :root {
+    /* Brand colors */
     --primary: #667eea;
     --primary-dark: #5a67d8;
     --secondary: #764ba2;
+
+    /* State colors */
     --success: #48bb78;
     --warning: #ed8936;
-    --danger: #f56565;
+    --danger:  #f56565;
+
+    /* Neutral */
     --light: #f7fafc;
-    --dark: #2d3748;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-    --shadow-md: 0 10px 25px rgba(0,0,0,0.1);
+    --dark:  #2d3748;
+
+    /* Effects */
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.10);
+    --shadow-md: 0 10px 25px rgba(0,0,0,0.10);
     --shadow-lg: 0 20px 40px rgba(0,0,0,0.12);
-    --border-radius: 16px;
+
+    --radius: 16px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
-    font-family: 'Vazir', 'IRANSans', -apple-system, sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: 'Vazir', 'IRANSans', -apple-system, system-ui, sans-serif;
     font-size: 16px;
     line-height: 1.7;
     color: var(--dark);
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     overflow-x: hidden;
 }
 
-/* =======================
-   Typography
-======================= */
+
+/* =========================
+   Theme: Navy / White
+========================= */
+:root{
+  --primary: #0f172a;        /* navy */
+  --primary-dark: #0b1220;
+  --secondary: #1e293b;      /* slate */
+  --accent: #2563eb;         /* blue accent */
+  --light: #f8fafc;
+  --dark: #0f172a;
+
+  --shadow-sm: 0 1px 3px rgba(15,23,42,0.10);
+  --shadow-md: 0 10px 25px rgba(15,23,42,0.12);
+  --shadow-lg: 0 20px 40px rgba(15,23,42,0.14);
+
+  --radius: 16px;
+  --transition: all .25s ease;
+}
+
+body{
+  background: var(--light);
+  color: var(--dark);
+  line-height: 1.85; /* فارسی خواناتر */
+}
+
+/* فارسی: فاصله و شکست خط بهتر */
+p, li, a, span { letter-spacing: 0; }
+
+/* دکمه اصلی رسمی */
+.btn-primary{
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.btn-primary:hover{
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+.btn-outline-primary{
+  color: var(--primary);
+  border-color: rgba(15,23,42,.25);
+}
+.btn-outline-primary:hover{
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+
+/* ==========================================================================
+   2) Typography Helpers
+========================================================================== */
 h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
     line-height: 1.2;
@@ -44,12 +111,11 @@ h1, h2, h3, h4, h5, h6 {
 .display-3 { font-size: clamp(3rem, 8vw, 5rem); }
 
 .text-muted { color: #718096 !important; }
-.text-white-emphasis { color: rgba(255,255,255,0.95) !important; }
-.opacity-90 { opacity: 0.9; }
+.opacity-90 { opacity: 0.90; }
 
-/* =======================
-   Buttons
-======================= */
+/* ==========================================================================
+   3) Bootstrap Overrides (Buttons / Cards / Inputs)
+========================================================================== */
 .btn {
     font-weight: 600;
     border-radius: 12px;
@@ -57,6 +123,11 @@ h1, h2, h3, h4, h5, h6 {
     transition: var(--transition);
     position: relative;
     overflow: hidden;
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 0.875rem;
 }
 
 .btn-primary {
@@ -77,6 +148,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-outline-primary:hover {
     background: var(--primary);
+    color: #fff;
     transform: translateY(-1px);
 }
 
@@ -85,41 +157,70 @@ h1, h2, h3, h4, h5, h6 {
     color: #4a5568;
 }
 
-.btn-sm { padding: 8px 16px; font-size: 0.875rem; }
-
-/* =======================
-   Cards & Shadows
-======================= */
-.card, .feature-card, .product-card, .team-card {
+.card {
     border: none;
-    border-radius: var(--border-radius);
+    border-radius: var(--radius);
     box-shadow: var(--shadow-sm);
     transition: var(--transition);
     background: rgba(255,255,255,0.95);
     backdrop-filter: blur(10px);
 }
 
-.card:hover, .feature-card:hover, .product-card:hover {
+.card:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
 }
 
-.hover-lift:hover {
-    transform: translateY(-10px) !important;
-    box-shadow: var(--shadow-lg) !important;
+.form-control {
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 14px 18px;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    background: rgba(255,255,255,0.85);
 }
 
-/* =======================
-   Navbar
-======================= */
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(102,126,234,0.15);
+    background: #fff;
+    transform: translateY(-1px);
+}
+
+/* Utilities */
+.rounded-4, .rounded-5 { border-radius: var(--radius) !important; }
+.shadow-xl { box-shadow: 0 35px 60px -12px rgba(0,0,0,0.25); }
+.bg-light   { background: linear-gradient(135deg, #f7fafc, #edf2f7) !important; }
+
+/* ==========================================================================
+   4) Header/Navbar + Z-index Safety
+   هدف: منو و dropdown همیشه قابل کلیک و روی همه چیز باشد
+========================================================================== */
+header {
+    position: relative;
+    z-index: 9999;
+}
+
+.navbar {
+    position: relative;
+    z-index: 10000;
+}
+
+.dropdown-menu {
+    position: absolute;
+    z-index: 10001;
+}
+
+/* هیچ overlay تزئینی کلیک‌ها را نگیرد */
+header::before,
+header::after {
+    pointer-events: none;
+}
+
+/* Navbar visuals */
 .bg-white {
     background: rgba(255,255,255,0.98) !important;
     backdrop-filter: blur(20px);
-}
-
-.main-navbar {
-    box-shadow: var(--shadow-sm);
-    border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 .brand-logo {
@@ -135,103 +236,51 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     font-size: 0.875rem;
     border: 1px solid rgba(0,0,0,0.05);
+    transition: var(--transition);
 }
 
 .nav-pill:hover {
     background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+    color: #fff !important;
     transform: translateY(-1px);
     box-shadow: var(--shadow-sm);
 }
 
-/* =======================
-   Hero Sections
-======================= */
+/* ==========================================================================
+   5) Hero (General)
+========================================================================== */
 .hero-section {
-    background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1));
-    border-radius: var(--border-radius);
+    background: linear-gradient(135deg, rgba(102,126,234,0.10), rgba(118,75,162,0.10));
+    border-radius: var(--radius);
     overflow: hidden;
+    position: relative;
+    z-index: 1; /* زیر منو */
 }
 
-.hero-img, .product-img {
-    height: 220px;
+.hero-image-wrapper { height: 260px; }
+
+.hero-img,
+.product-img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     transition: var(--transition);
+    border-radius: 16px;
 }
 
-.hero-img:hover {
-    transform: scale(1.05);
-}
+.hero-img:hover { transform: scale(1.05); }
 
 .hero-overlay-gradient {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
-    border-radius: var(--border-radius);
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0.35), rgba(0,0,0,0.15));
+    border-radius: 16px;
+    pointer-events: none;
 }
 
-.hero-badge {
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(10px);
-    box-shadow: var(--shadow-md);
-}
-
-/* =======================
-   Stats Cards
-======================= */
-.stats-card {
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: var(--shadow-sm);
-}
-
-/* =======================
-   Feature Cards
-======================= */
-.icon-circle, .icon-wrapper {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    box-shadow: var(--shadow-md);
-}
-
-.icon-wrapper {
-    width: 100px;
-    height: 100px;
-    font-size: 2.5rem;
-}
-
-/* =======================
-   About Page
-======================= */
-.bg-gradient-primary {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
-}
-
-.about-hero-img {
-    position: relative;
-    z-index: 2;
-}
-
-.team-avatar {
-    width: 100px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    box-shadow: var(--shadow-lg);
-}
-
-/* =======================
-   Footer
-======================= */
+/* ==========================================================================
+   6) Footer
+========================================================================== */
 .site-footer {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     color: #e2e8f0;
@@ -240,6 +289,7 @@ h1, h2, h3, h4, h5, h6 {
 .footer-link {
     color: #cbd5e1;
     transition: var(--transition);
+    text-decoration: none;
 }
 
 .footer-link:hover {
@@ -247,69 +297,12 @@ h1, h2, h3, h4, h5, h6 {
     text-decoration: none;
 }
 
-/* =======================
-   Forms
-======================= */
-.form-control, .nice-contact-form input, .nice-contact-form textarea {
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
-    padding: 14px 18px;
-    font-size: 0.95rem;
-    transition: var(--transition);
-    background: rgba(255,255,255,0.8);
-}
-
-.form-control:focus, .nice-contact-form input:focus, .nice-contact-form textarea:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 0.2rem rgba(102,126,234,0.15);
-    background: white;
-    transform: translateY(-1px);
-}
-
-/* =======================
-   Utilities
-======================= */
-.bg-light { background: linear-gradient(135deg, #f7fafc, #edf2f7) !important; }
-.rounded-4, .rounded-5 { border-radius: var(--border-radius) !important; }
-.rounded-circle { border-radius: 50% !important; }
-
-.position-absolute { position: absolute; }
-.position-relative { position: relative; }
-.overflow-hidden { overflow: hidden; }
-
-/* =======================
-   Animations
-======================= */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translate3d(0, 40px, 0);
-    }
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-    }
-}
-
-.fade-in-up {
-    animation: fadeInUp 0.8s ease-out;
-}
-
-/* =======================
-   Responsive
-======================= */
-@media (max-width: 768px) {
-    .hero-img, .product-img { height: 180px; }
-    .icon-wrapper { width: 70px; height: 70px; font-size: 2rem; }
-    .nav-pill { margin: 0 4px; padding: 6px 12px !important; }
-}
-
-@media (max-width: 576px) {
-    .container { padding-left: 15px; padding-right: 15px; }
-    h1 { font-size: 1.75rem; }
-}
-
-/* Login Page */
+/* ==========================================================================
+   7) Login / Signup Pages
+   هماهنگ با:
+   - login.html (کلاس‌های: login-page, login-card, login-input, shadow-xl, bg-gradient-login)
+   - signup.html (همون login-card و bg-gradient-login)
+========================================================================== */
 .bg-gradient-login {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
     min-height: 100vh;
@@ -320,6 +313,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .login-card {
+    position: relative;
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255,255,255,0.2);
     max-width: 420px;
@@ -327,79 +321,35 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .login-card::before {
-    content: '';
+    content: "";
     position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
+    inset: 0 0 auto 0;
     height: 4px;
     background: linear-gradient(90deg, var(--primary), var(--secondary));
-    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    border-radius: var(--radius) var(--radius) 0 0;
 }
 
 .login-input {
     border-radius: 16px !important;
     border: 2px solid #e2e8f0 !important;
     padding: 16px 20px !important;
+    background: rgba(255,255,255,0.92);
     transition: var(--transition);
-    background: rgba(255,255,255,0.9);
 }
 
 .login-input:focus {
     border-color: var(--primary) !important;
     box-shadow: 0 0 0 0.25rem rgba(102,126,234,0.15) !important;
-    background: white !important;
+    background: #fff !important;
     transform: translateY(-2px);
 }
 
-.password-toggle {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #9ca3af;
-    cursor: pointer;
-    z-index: 10;
-}
-
-.divider {
-    position: relative;
-    text-align: center;
-}
-
-.divider::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    right: -15px;
-    left: -15px;
-    height: 1px;
-    background: #e2e8f0;
-    z-index: 1;
-}
-
-.divider-text {
-    background: white;
-    padding: 0 20px;
-    color: #9ca3af;
-    font-size: 0.875rem;
-    position: relative;
-    z-index: 2;
-}
-
-.login-footer {
-    border-top: 1px solid #e2e8f0;
-}
-
-.shadow-xl {
-    box-shadow: 0 35px 60px -12px rgba(0,0,0,0.25);
-}
-
-@media (max-width: 576px) {
-    .login-card { margin: 0 1rem; }
-}
-
-/* Profile Page */
+/* ==========================================================================
+   8) Profile Page
+   هماهنگ با profile.html:
+   - bg-gradient-profile
+   - profile-avatar-large, avatar-letter, avatar-status
+========================================================================== */
 .bg-gradient-profile {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f6d365 100%) !important;
 }
@@ -409,9 +359,8 @@ h1, h2, h3, h4, h5, h6 {
     height: 120px;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
     position: relative;
     box-shadow: var(--shadow-lg);
 }
@@ -419,7 +368,7 @@ h1, h2, h3, h4, h5, h6 {
 .avatar-letter {
     font-size: 3rem;
     font-weight: 700;
-    color: white;
+    color: #fff;
     text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
@@ -429,486 +378,30 @@ h1, h2, h3, h4, h5, h6 {
     left: 8px;
     width: 24px;
     height: 24px;
-    border: 3px solid white;
+    border: 3px solid #fff;
     border-radius: 50%;
 }
 
-.profile-nav-item {
-    display: flex;
-    align-items: center;
-    padding: 12px 16px;
-    border-radius: 12px;
-    color: #64748b;
-    font-weight: 500;
-    margin-bottom: 8px;
-    transition: var(--transition);
-}
-
-.profile-nav-item:hover,
-.profile-nav-item.active {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
-    transform: translateX(-4px);
-}
-
-.profile-stats {
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.2);
-}
-
-.info-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-}
-
-.activity-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 1.1rem;
-}
-
-.profile-sidebar-card {
-    border: 1px solid rgba(0,0,0,0.05);
-}
-
-.sticky-top {
-    top: 2rem;
-}
-
-@media (max-width: 992px) {
-    .profile-sidebar-card { position: static !important; }
-}
-
-/* Products Page */
-.bg-gradient-products {
-    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
-}
-
-.product-card {
-    background: white;
-    transition: var(--transition);
-}
-
-.product-card:hover {
-    transform: translateY(-12px);
-    box-shadow: var(--shadow-lg);
-}
-
-.product-image-wrapper {
-    position: relative;
-    height: 240px;
-    overflow: hidden;
-}
-
-.product-img {
-    height: 100%;
-    object-fit: cover;
-    transition: var(--transition);
-}
-
-.product-card:hover .product-img {
-    transform: scale(1.08);
-}
-
-.product-actions {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    opacity: 0;
-    transition: var(--transition);
-}
-
-.product-card:hover .product-actions {
-    opacity: 1;
-}
-
-.btn-action {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.9);
-    backdrop-filter: blur(10px);
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-}
-
-.btn-action:hover {
-    background: white;
-    transform: scale(1.1);
-}
-
-.product-badge {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    z-index: 2;
-}
-
+/* ==========================================================================
+   9) Reusable Components (Tags / Empty state)
+   (حذف تکراری‌ها: filter-tag و empty-state فقط یک بار تعریف شده‌اند)
+========================================================================== */
 .filter-tag {
     display: inline-block;
     padding: 8px 16px;
+    border-radius: 25px;
+    font-weight: 500;
     margin-bottom: 8px;
     background: #f7fafc;
-    border-radius: 25px;
     color: #64748b;
-    font-weight: 500;
     transition: var(--transition);
 }
 
 .filter-tag.active,
 .filter-tag:hover {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
+    color: #fff;
     transform: translateY(-1px);
-}
-
-.search-input-wrapper .form-control:focus {
-    border-color: white !important;
-    box-shadow: 0 0 0 0.25rem rgba(255,255,255,0.25) !important;
-}
-
-.pagination .page-link {
-    border-radius: 10px;
-    margin: 0 2px;
-    color: var(--primary);
-}
-
-.pagination .page-item.active .page-link {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    border-color: var(--primary);
-}
-
-@media (max-width: 768px) {
-    .filters-card { position: static !important; margin-bottom: 2rem; }
-    .product-image-wrapper { height: 200px; }
-}
-
-/* Product Detail Page */
-.bg-gradient-detail {
-    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%) !important;
-}
-
-.main-product-image {
-    height: 450px;
-    background: #f8fafc;
-}
-
-.main-img {
-    height: 100%;
-    object-fit: cover;
-    transition: var(--transition);
-}
-
-.main-product-image:hover .main-img {
-    transform: scale(1.02);
-}
-
-.thumbnail-item.active {
-    border: 3px solid var(--primary);
-    transform: scale(1.05);
-}
-
-.product-description {
-    font-size: 1.05rem;
-    line-height: 1.8;
-    color: #4a5568;
-}
-
-.meta-label {
-    font-weight: 600;
-    color: #718096;
-    display: block;
-    font-size: 0.9rem;
-}
-
-.meta-value {
-    font-weight: 500;
-    margin-top: 4px;
-    display: block;
-}
-
-.buy-card {
-    border: 1px solid rgba(0,0,0,0.05);
-}
-
-.rating-stars i {
-    font-size: 1.1rem;
-}
-
-.review-item {
-    transition: var(--transition);
-}
-
-.review-item:hover {
-    background: white;
-    transform: translateX(-5px);
-}
-
-.breadcrumb-item a:hover {
-    text-decoration: underline;
-}
-
-@media (max-width: 768px) {
-    .buy-card {
-        position: static !important;
-        margin-top: 2rem;
-    }
-    .main-product-image { height: 350px; }
-}
-
-/* Media Files Page */
-.bg-gradient-media {
-    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%) !important;
-}
-
-.stat-card {
-    transition: var(--transition);
-    cursor: pointer;
-}
-
-.stat-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
-}
-
-.stat-icon {
-    width: 70px;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.file-icon {
-    width: 120px;
-    height: 120px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    position: relative;
-}
-
-.file-badge {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    background: rgba(255,255,255,0.9);
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 700;
-}
-
-.preview-badge {
-    background: rgba(59,130,246,0.9);
-    color: white;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-}
-
-.filter-tag {
-    padding: 8px 16px;
-    border-radius: 25px;
-    font-weight: 500;
-    transition: var(--transition);
-}
-
-.filter-tag.active,
-.filter-tag:hover {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
-    transform: translateY(-2px);
-}
-
-.empty-state {
-    border: 2px dashed #e2e8f0;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-@media (max-width: 768px) {
-    .filters-bar { padding: 1.5rem !important; }
-    .file-icon { width: 100px; height: 100px; }
-}
-
-/* Order Detail Page */
-.bg-gradient-order {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%) !important;
-}
-
-.order-status-badge {
-    padding: 10px 20px;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 0.95rem;
-}
-
-.status-paid { background: rgba(72,187,120,0.2); color: #48bb78; }
-.status-pending { background: rgba(245,158,11,0.2); color: #f59e0b; }
-.status-cancelled { background: rgba(239,68,68,0.2); color: #ef4444; }
-
-.product-thumbnail {
-    width: 180px;
-    height: 180px;
-    background: #f8fafc;
-}
-
-.timeline {
-    position: relative;
-    padding-right: 30px;
-}
-
-.timeline::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 15px;
-    width: 2px;
-    background: linear-gradient(to bottom, #e2e8f0, #cbd5e1);
-}
-
-.timeline-item {
-    position: relative;
-    margin-bottom: 2rem;
-    display: flex;
-    align-items: center;
-}
-
-.timeline-item:last-child { margin-bottom: 0; }
-
-.timeline-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-    color: white;
-    position: absolute;
-    right: -64px;
-    z-index: 2;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.timeline-item.active .timeline-icon {
-    box-shadow: 0 0 0 4px rgba(255,255,255,0.3);
-}
-
-.bg-gradient-light {
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-}
-
-.invoice-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-}
-
-.invoice-label {
-    font-weight: 500;
-    color: #64748b;
-    min-width: 100px;
-}
-
-.invoice-value {
-    text-align: left;
-}
-
-.action-item {
-    color: #64748b;
-    text-decoration: none;
-    font-size: 0.95rem;
-    transition: var(--transition);
-    padding: 8px 0;
-    border-right: 3px solid transparent;
-}
-
-.action-item:hover {
-    color: var(--primary);
-    border-right-color: var(--primary);
-}
-
-@media print {
-    .page-hero, .order-actions, .timeline-icon { display: none !important; }
-    .invoice-card { box-shadow: none !important; }
-}
-
-@media (max-width: 768px) {
-    .timeline { padding-right: 20px; }
-    .timeline-icon { right: -44px; }
-}
-
-/* Orders Page */
-.bg-gradient-orders {
-    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%) !important;
-}
-
-.stat-badge {
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.2);
-}
-
-.status-badge {
-    font-size: 0.8rem;
-    font-weight: 600;
-    padding: 6px 12px;
-    border-radius: 20px;
-}
-
-.status-paid {
-    background: rgba(72,187,120,0.15);
-    color: #48bb78;
-}
-
-.status-pending {
-    background: rgba(245,158,11,0.15);
-    color: #f59e0b;
-}
-
-.status-cancelled {
-    background: rgba(239,68,68,0.15);
-    color: #ef4444;
-}
-
-.order-card {
-    background: white;
-    transition: var(--transition);
-    border: 1px solid rgba(0,0,0,0.05);
-}
-
-.order-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-lg);
-}
-
-.product-preview {
-    transition: var(--transition);
-}
-
-.order-card:hover .product-preview img {
-    transform: scale(1.05);
 }
 
 .empty-state {
@@ -917,67 +410,12 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0 auto;
 }
 
-.date-filters .btn {
-    border-radius: 25px;
-    font-size: 0.85rem;
-}
-
-.date-filters .btn.active {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    border-color: var(--primary);
-}
-
-.orders-controls .input-group {
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-@media (max-width: 768px) {
-    .orders-controls .input-group { flex-direction: column; gap: 0.5rem; }
-    .date-filters { justify-content: center !important; }
-}
-
-
-
-/* همیشه header بالاتر از بقیه */
-header {
-    position: relative;
-    z-index: 9999;
-}
-
-/* خود navbar و dropdown از همه بالاتر */
-.navbar {
-    position: relative;
-    z-index: 10000;
-}
-
-.dropdown-menu {
-    position: absolute;
-    z-index: 10001;
-}
-
-/* Hero همیشه زیر header و منو */
-.hero-section {
-    position: relative;
-    z-index: 1;
-}
-
-/* بنر مشکی هم زیر منو */
-.hero-banner {
-    position: relative;
-    z-index: 1;
-}
-
-/* مطمئن شو هیچ لایه تزئینی کلیک‌ها رو نمی‌گیرد */
-header::before,
-header::after,
-.hero-section::before,
-.hero-section::after {
-    pointer-events: none;
-}
-
+/* ==========================================================================
+   10) Forms: Nice Contact Form (اگر در تماس استفاده می‌کنی)
+========================================================================== */
 .nice-contact-form input,
 .nice-contact-form textarea {
+    width: 100%;
     color: #111827;
 }
 
@@ -991,56 +429,1080 @@ header::after,
     min-width: 80px;
 }
 
-.nice-contact-form input,
-.nice-contact-form textarea {
-    width: 100%;
-}
-
-/* مخصوص هدر صفحه تماس */
+/* ==========================================================================
+   11) Page Hero - Contact (متن سفید خوانا روی بک‌گراند تیره)
+========================================================================== */
 .bg-gradient-contact {
     background: linear-gradient(135deg, #1f2937 0%, #111827 40%, #0f172a 100%) !important;
-    /* پس‌زمینه تیره‌تر تا متن سفید واضح شود */
 }
 
 .page-hero h1,
 .page-hero .lead {
-    color: #ffffff !important;   /* متن سفید خالص */
-    opacity: 1 !important;       /* شفافیت کامل */
+    color: #fff !important;
+    opacity: 1 !important;
 }
 
-.hero-image-wrapper {
-    height: 260px;
-}
-
-.hero-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 16px;
-}
-
-.hero-overlay-gradient {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(0,0,0,0.35), rgba(0,0,0,0.15));
-    pointer-events: none;
-    border-radius: 16px;
-}
-
-.hero-section .row {
-    align-items: center;
-}
-
-@media (min-width: 992px) {
-    .hero-section {
-        padding-top: 2.5rem;
-        padding-bottom: 2.5rem;
-    }
-}
-
-/* مخفی کردن متن زشت FileField پیش‌فرض، اگر جایی باقی مانده باشد */
+/* ==========================================================================
+   12) File input cleanup (برای حذف لینک/چک‌باکس پیش‌فرض ClearableFileInput)
+========================================================================== */
 input[type="file"] + a,
 input[type="file"] ~ label[for$="-clear_id"],
 input[type="file"] ~ input[type="checkbox"] {
     display: none !important;
+}
+
+/* ==========================================================================
+   13) Responsive Tweaks
+========================================================================== */
+@media (max-width: 768px) {
+    .hero-image-wrapper { height: 220px; }
+    .nav-pill { margin: 0 4px; padding: 6px 12px !important; }
+}
+
+@media (max-width: 576px) {
+    .container { padding-left: 15px; padding-right: 15px; }
+    .login-card { margin: 0 1rem; }
+    h1 { font-size: 1.75rem; }
+}
+
+
+
+/* =========================
+   Page Hero (Standard)
+========================= */
+.page-hero{
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+  background: var(--primary);
+  color: #fff;
+}
+
+.page-hero .page-hero-inner{
+  padding: 2.25rem 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.page-hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(135deg, rgba(15,23,42,.92), rgba(15,23,42,.65));
+  z-index:1;
+}
+
+/* تیتر/متن داخل هرو همیشه سفید و خوانا */
+.page-hero h1,
+.page-hero p{
+  color:#fff !important;
+}
+.page-hero p{ opacity:.92; }
+
+
+
+
+/* =========================
+   About (Image sizing)
+========================= */
+.about-hero-img{
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+@media (max-width: 768px){
+  .about-hero-img{ max-height: 260px; }
+}
+
+
+/* =========================
+   Products layout
+========================= */
+.filters-card{
+  position: sticky;
+  top: 1rem;
+}
+
+.product-card{
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+.product-card:hover{
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+}
+
+.product-image-wrapper{
+  height: 210px;
+  overflow: hidden;
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+}
+.product-image-wrapper img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* Products Hero (navy) */
+.page-hero{
+  background: #0f172a;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  color: #fff;
+}
+.page-hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(135deg, rgba(15,23,42,.90), rgba(15,23,42,.60));
+}
+.page-hero > .container{ position: relative; z-index: 2; }
+
+/* Filters */
+.filters-card{
+  position: sticky;
+  top: 1rem;
+}
+
+/* Product card */
+.product-card{ border: 0; box-shadow: 0 10px 25px rgba(15,23,42,.08); transition: .2s ease; }
+.product-card:hover{ transform: translateY(-5px); box-shadow: 0 18px 35px rgba(15,23,42,.12); }
+
+.product-image-wrapper{ position: relative; height: 210px; overflow: hidden; }
+.product-image-wrapper img{ width:100%; height:100%; object-fit: cover; display:block; }
+
+.product-actions{
+  position:absolute;
+  top:10px;
+  left:10px;
+  display:flex;
+  flex-direction: column;
+  gap:8px;
+  opacity:0;
+  transition:.2s ease;
+}
+.product-card:hover .product-actions{ opacity:1; }
+
+.btn-action{
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.92);
+  border: 0;
+  display: inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Badges */
+.product-badge{
+  position:absolute;
+  top:10px;
+  right:10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 700;
+}
+
+/* ===== Navbar (dark) + nav-pill fix ===== */
+.navbar.navbar-dark .nav-link.nav-pill{
+  color: rgba(255,255,255,.92) !important;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.14);
+}
+
+.navbar.navbar-dark .nav-link.nav-pill:hover,
+.navbar.navbar-dark .nav-link.nav-pill:focus{
+  color: #0f172a !important;
+  background: #ffffff;
+  border-color: rgba(255,255,255,.65);
+  transform: translateY(-1px);
+}
+
+/* اگر لینک صفحه فعلی رو active می‌کنی */
+.navbar.navbar-dark .nav-link.nav-pill.active{
+  color: #0f172a !important;
+  background: #ffffff;
+  border-color: rgba(255,255,255,.70);
+}
+
+/* ===== Products Hero (big + readable) ===== */
+.products-hero{
+  position: relative;
+  overflow: hidden;
+  border-radius: 0; /* چون بالای صفحه است، فول‌ویدث بهتره */
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #2563eb 130%);
+}
+
+.products-hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(900px 400px at 15% 20%, rgba(255,255,255,.12), transparent 60%),
+    radial-gradient(700px 350px at 85% 0%, rgba(255,255,255,.10), transparent 55%);
+  pointer-events:none;
+}
+
+.products-hero .container{
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== Big hero (navy) ===== */
+.products-hero{
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #2563eb 130%);
+  position: relative;
+  overflow: hidden;
+}
+.products-hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(900px 400px at 15% 20%, rgba(255,255,255,.12), transparent 60%),
+    radial-gradient(700px 350px at 85% 0%, rgba(255,255,255,.10), transparent 55%);
+  pointer-events:none;
+}
+.products-hero .container{ position: relative; z-index: 2; }
+
+/* ===== Product cards ===== */
+.product-card{ transition: .2s ease; }
+.product-card:hover{ transform: translateY(-5px); }
+
+/* ===== Product list image ===== */
+.product-image-wrapper{ position: relative; height: 210px; overflow: hidden; }
+.product-image-wrapper img{ width:100%; height:100%; object-fit: cover; display:block; }
+
+/* ===== Product detail images ===== */
+.main-product-image{ background:#f8fafc; }
+.product-main-img{ height: 420px; object-fit: cover; display:block; }
+@media (max-width: 768px){ .product-main-img{ height: 280px; } }
+
+.product-thumb-img{
+  width: 74px;
+  height: 74px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(15,23,42,.12);
+}
+
+/* ===== Floating actions on cards ===== */
+.product-actions{
+  position:absolute;
+  top:10px;
+  left:10px;
+  display:flex;
+  flex-direction: column;
+  gap:8px;
+  opacity:0;
+  transition:.2s ease;
+}
+.product-card:hover .product-actions{ opacity:1; }
+
+.btn-action{
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.92);
+  border: 0;
+  display: inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* ===== Badges ===== */
+.product-badge{
+  position:absolute;
+  top:10px;
+  right:10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 700;
+}
+
+/* ===== Filters sticky ===== */
+.filters-card{ position: sticky; top: 1rem; }
+
+
+/* ===== Site Hero (big banner) ===== */
+.site-hero{
+  position: relative;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  overflow: hidden;
+}
+
+.site-hero-bg{
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.02);
+}
+
+.site-hero-content{
+  position: relative;
+  z-index: 2;
+}
+
+/* glass card in hero */
+.hero-glass-card{
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 1.25rem;
+}
+
+/* stats in hero */
+.hero-stat{
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: .9rem 1.1rem;
+  min-width: 150px;
+}
+
+/* about image sizing (fix huge images) */
+.about-cover{
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+}
+
+/* small icon circle helper */
+.icon-circle-sm{
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== Site Hero (big banner) ===== */
+.site-hero{
+  position: relative;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  overflow: hidden;
+}
+
+.site-hero-bg{
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.02);
+}
+
+.site-hero-content{
+  position: relative;
+  z-index: 2;
+}
+
+/* glass card in hero */
+.hero-glass-card{
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 1.25rem;
+}
+
+/* stats in hero */
+.hero-stat{
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: .9rem 1.1rem;
+  min-width: 150px;
+}
+
+/* about image sizing (fix huge images) */
+.about-cover{
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+}
+
+/* small icon circle helper */
+.icon-circle-sm{
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== Contact icons (clean sizing) ===== */
+.contact-mini{
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(15,23,42,.10);
+  background: #fff;
+}
+
+.contact-mini-icon{
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 48px; /* ثابت بمونه، له نشه */
+}
+
+.contact-mini-icon i{
+  font-size: 22px;  /* اندازه استاندارد */
+  line-height: 1;
+}
+
+/* حالت خیلی تمیزتر برای کارت اطلاعات */
+.contact-info-card .contact-mini{
+  box-shadow: 0 10px 25px rgba(15,23,42,.06);
+}
+
+/* ===== RTL friendly input-group (email icon + input) ===== */
+.input-group .input-group-text{
+  min-width: 48px;
+  justify-content: center;
+  border-radius: 14px;
+  padding: .65rem .9rem;
+}
+
+.input-group .form-control{
+  border-radius: 14px;
+  padding: .65rem .9rem;
+}
+
+/* وقتی border-0 می‌ذاری، بهتره پس‌زمینه یکدست باشه */
+.input-group .input-group-text.bg-light{
+  background: #f1f5f9 !important;
+}
+
+/* آیکن دقیقاً وسط و اندازه درست */
+.input-group .input-group-text i{
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+/* اگر فاصله بین span و input عجیب شد */
+.input-group > :not(:first-child){
+  margin-right: 0; /* RTL safe */
+}
+
+/* Labels on RTL: stick to right */
+form .form-label{
+  display: block;
+  text-align: right;
+}
+form.text-end .form-label{ display:block; text-align:right; }
+
+
+/* Mediafiles page helpers */
+.stat-icon{
+  width: 48px; height: 48px;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 48px;
+}
+.stat-icon i{ font-size: 20px; line-height: 1; }
+
+.filter-tag{
+  border: 1px solid rgba(15,23,42,.12);
+  background: #fff;
+  border-radius: 999px;
+  padding: .45rem .85rem;
+  font-size: .875rem;
+  color: #0f172a;
+  cursor: pointer;
+}
+.filter-tag.active{
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #fff;
+}
+
+.file-type-icon{
+  width: 48px; height: 48px;
+  border-radius: 16px;
+  background: rgba(15,23,42,.06);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 48px;
+}
+.file-type-icon i{ font-size: 22px; line-height: 1; color: #0f172a; }
+
+.file-card{ transition: .2s ease; }
+.file-card:hover{ transform: translateY(-4px); }
+
+
+
+/* ================================
+   Orders List Page
+================================ */
+
+.order-card {
+  background: #fff;
+  transition: all .25s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 1rem 2rem rgba(0,0,0,.08);
+}
+
+.status-badge {
+  font-size: .75rem;
+  padding: .35rem .75rem;
+  border-radius: 999px;
+  color: #fff;
+}
+
+.status-badge.bg-success { background-color: #22c55e !important; }
+.status-badge.bg-warning { background-color: #f59e0b !important; }
+
+.product-preview img {
+  object-fit: cover;
+}
+
+.empty-state {
+  border: 2px dashed #e5e7eb;
+  background: #f8fafc;
+}
+
+/* Table view */
+.orders-table .table th {
+  font-weight: 600;
+}
+
+.status-paid {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* ================================
+   Order Detail Page
+================================ */
+
+.order-status-badge {
+  padding: .4rem 1rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.order-status-badge.status-paid {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.order-status-badge.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.order-product-card img {
+  object-fit: cover;
+}
+
+.timeline {
+  position: relative;
+  margin-top: 2rem;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  right: 18px;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: #e5e7eb;
+}
+
+.timeline-item {
+  position: relative;
+  padding-right: 60px;
+  margin-bottom: 2rem;
+}
+
+.timeline-icon {
+  position: absolute;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.timeline-item.active .timeline-icon {
+  background: #22c55e;
+}
+
+.timeline-item.pending .timeline-icon {
+  background: #f59e0b;
+}
+
+.invoice-card {
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+}
+
+/* ================================
+   Downloads Page
+================================ */
+
+.download-card {
+  transition: all .25s ease;
+}
+
+.download-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 1rem 2rem rgba(0,0,0,.08);
+}
+
+.download-card .card-header {
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #fff;
+}
+
+.download-thumb img {
+  object-fit: cover;
+}
+
+.download-meta li {
+  font-size: .875rem;
+  color: #475569;
+}
+
+.download-meta i {
+  color: #22c55e;
+}
+
+/* متن خوش آمد گویی کاربر در منوی dropdown */
+.user-welcome {
+    direction: rtl; /* جهت راست به چپ */
+    text-align: right; /* متن سمت راست */
+    padding-right: 0.5rem; /* کمی فاصله از سمت راست */
+}
+
+/* فونت هماهنگ با سایت */
+.user-welcome .small {
+    font-size: 0.8rem;
+    color: #6c757d; /* همان text-muted بوت‌استرپ */
+}
+
+.user-welcome .fw-semibold {
+    font-weight: 600;
+    color: #212529; /* متن اصلی */
+}
+
+/* ریسپانسیو: وقتی در موبایل dropdown کوچک می‌شود */
+@media (max-width: 991px) {
+    .user-welcome {
+        text-align: right;
+        padding-right: 0.5rem;
+    }
+}
+
+/* =========================
+   Home Hero (Clean + Standard)
+========================= */
+.home-hero{
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  box-shadow: var(--shadow-lg);
+  margin-top: .25rem;
+
+  /* ارتفاع استاندارد و ریسپانسیو */
+  min-height: clamp(420px, 48vw, 540px);
+  display: grid;
+  align-items: center;
+}
+
+.home-hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+
+  /* بک‌گراند + گرادینت */
+  background:
+    linear-gradient(135deg, rgba(15,23,42,.92), rgba(15,23,42,.55)),
+    url("../images/hero.jpg");
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.02);
+  z-index: 1;
+}
+
+.home-hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(900px 420px at 18% 18%, rgba(37,99,235,.35), transparent 60%),
+    radial-gradient(700px 360px at 85% 12%, rgba(255,255,255,.12), transparent 55%);
+  z-index: 2;
+  pointer-events:none;
+}
+
+.home-hero .home-hero-inner{
+  position: relative;
+  z-index: 3;
+  width: 100%;
+}
+
+.hero-badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.hero-badge{
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(10px);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: .9rem;
+  line-height: 1;
+  color: rgba(255,255,255,.92);
+  white-space: nowrap;
+}
+
+.hero-card{
+  background: rgba(15,23,42,.35);
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(14px);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+/* دکمه‌ها تو بنر یکدست‌تر */
+.hero-actions .btn{
+  border-radius: 14px;
+  padding: 12px 18px;
+}
+
+/* تصویر محصول در کارت‌ها */
+.product-img-fixed{
+  height: 220px;
+  object-fit: cover;
+}
+
+/* Responsive */
+@media (max-width: 992px){
+  .home-hero{
+    border-radius: 18px;
+    min-height: clamp(520px, 70vw, 640px);
+  }
+}
+
+/* Force outline-light behavior in hero */
+.home-hero a.btn.btn-outline-light{
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+.home-hero a.btn.btn-outline-light:hover,
+.home-hero a.btn.btn-outline-light:focus{
+  background: #fff !important;
+  color: #0f172a !important;
+  border-color: #fff !important;
+}
+.home-hero .btn.btn-outline-light:hover{
+  background: #fff !important;
+  color: #0f172a !important;
+  border-color: #fff !important;
+}
+/* Force hero text contrast */
+.home-hero h1{
+  color: #fff !important;
+}
+
+.home-hero p,
+.home-hero .text-white-50{
+  color: rgba(255,255,255,.78) !important;
+}
+
+/* Primary button on dark hero: white border */
+.home-hero .hero-card .btn.btn-primary{
+  border: 2px solid rgba(255,255,255,.85) !important;
+  box-shadow: none;
+}
+
+.home-hero .hero-card .btn.btn-primary:hover{
+  border-color: #fff !important;
+  filter: brightness(1.05);
+}
+/* Feature cards icons (responsive) */
+.icon-circle-sm{
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-circle-sm i{
+  font-size: 28px; /* desktop */
+  line-height: 1;
+}
+
+@media (max-width: 768px){
+  .icon-circle-sm{
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+  }
+  .icon-circle-sm i{
+    font-size: 24px; /* mobile */
+  }
+}
+
+/* =========================
+   Home Hero (Responsive + Clean)
+========================= */
+.home-hero{
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  box-shadow: var(--shadow-lg);
+  margin-top: .25rem;
+
+  /* ارتفاع استاندارد و ریسپانسیو */
+  min-height: clamp(420px, 46vw, 560px);
+  display: grid;
+  align-items: center;
+}
+
+/* بک‌گراند + گرادینت */
+.home-hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(135deg, rgba(15,23,42,.92), rgba(15,23,42,.58)),
+    url("../images/hero.jpg");
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.02);
+  z-index: 1;
+}
+
+/* نورپردازی نرم */
+.home-hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(900px 420px at 18% 18%, rgba(37,99,235,.28), transparent 60%),
+    radial-gradient(700px 360px at 85% 12%, rgba(255,255,255,.10), transparent 55%);
+  z-index: 2;
+  pointer-events:none;
+}
+
+.home-hero .home-hero-inner{
+  position: relative;
+  z-index: 3;
+  width: 100%;
+}
+
+/* خوانایی متن: عرض متن محدودتر */
+.home-hero .hero-title{ max-width: 18ch; }
+.home-hero .hero-subtitle{ max-width: 52ch; }
+
+/* کارت شیشه‌ای تمیزتر */
+.hero-card{
+  background: rgba(15,23,42,.32);
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(14px);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+/* badges */
+.hero-badge{
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(10px);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: .9rem;
+  line-height: 1;
+  color: rgba(255,255,255,.92);
+  white-space: nowrap;
+}
+
+/* Responsive tweaks: Bootstrap is mobile-first, breakpoints like lg=992px, sm=576px */
+@media (max-width: 992px){
+  .home-hero{
+    border-radius: 18px;
+    min-height: clamp(520px, 78vw, 720px);
+  }
+  .home-hero .hero-title{
+    max-width: none;
+    font-size: clamp(1.8rem, 4.6vw, 2.6rem);
+  }
+  .home-hero .hero-subtitle{ max-width: none; }
+}
+
+@media (max-width: 576px){
+  .home-hero{
+    min-height: clamp(560px, 110vw, 760px);
+  }
+  .hero-actions .btn{
+    width: 100%;
+  }
+  .hero-trust span{
+    display: inline-block;
+    margin-bottom: .35rem;
+  }
+}
+
+/* =========================
+   Home Hero (clean + SaaS-like)
+========================= */
+.home-hero{
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  box-shadow: var(--shadow-lg);
+  margin-top: .25rem;
+
+  /* استانداردتر و کمتر شلوغ */
+  min-height: clamp(380px, 42vw, 520px);
+  display: grid;
+  align-items: center;
+}
+
+.home-hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(135deg, rgba(15,23,42,.92), rgba(15,23,42,.60)),
+    url("../images/hero.jpg");
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.02);
+  z-index: 1;
+}
+
+.home-hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(900px 420px at 18% 18%, rgba(37,99,235,.22), transparent 60%),
+    radial-gradient(700px 360px at 85% 12%, rgba(255,255,255,.10), transparent 55%);
+  z-index: 2;
+  pointer-events:none;
+}
+
+.home-hero .home-hero-inner{ position: relative; z-index: 3; width: 100%; }
+
+/* تایپوگرافی داخل بنر */
+.home-hero .hero-title{
+  font-family: 'Vazir', 'IRANSans', -apple-system, system-ui, sans-serif;
+  letter-spacing: 0;
+  line-height: 1.15;
+  font-size: clamp(1.9rem, 3.3vw, 3.0rem);
+  max-width: 22ch;
+}
+
+.home-hero .hero-subtitle{
+  font-family: 'Vazir', 'IRANSans', -apple-system, system-ui, sans-serif;
+  line-height: 1.9;
+  max-width: 60ch;
+}
+
+/* badges خلوت‌تر */
+.hero-badges{ display:flex; flex-wrap:wrap; gap:10px; }
+.hero-badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.16);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: .85rem;
+  color: rgba(255,255,255,.92);
+  backdrop-filter: blur(10px);
+}
+
+/* card شیشه‌ای */
+.hero-card{
+  background: rgba(15,23,42,.28);
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(14px);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+/* دکمه outline مثل هم (محصولات و رایگان) */
+.btn-hero-outline{
+  background: transparent !important;
+  border: 1px solid rgba(255,255,255,.85) !important; /* خط نازک سفید */
+  color: #fff !important;
+  border-radius: 14px;
+  transition: .2s ease;
+}
+
+.btn-hero-outline:hover,
+.btn-hero-outline:focus{
+  background: #fff !important;     /* هاور: سفید کامل */
+  color: #0f172a !important;       /* متن سرمه‌ای */
+  border-color: #fff !important;
+  transform: translateY(-1px);
+}
+
+/* ریسپانسیو: موبایل دکمه‌ها فول‌ویدث و متن کوتاه‌تر */
+@media (max-width: 992px){
+  .home-hero{
+    border-radius: 18px;
+    min-height: clamp(520px, 78vw, 700px);
+  }
+  .home-hero .hero-title{ max-width: none; }
+  .home-hero .hero-subtitle{ max-width: none; }
+}
+
+@media (max-width: 576px){
+  .home-hero{
+    min-height: clamp(560px, 110vw, 760px);
+  }
+  .hero-actions .btn{ width: 100%; }
+  .hero-trust span{ display: inline-block; margin-bottom: .35rem; }
 }

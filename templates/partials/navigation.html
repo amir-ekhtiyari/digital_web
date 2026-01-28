@@ -1,10 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{# templates/partials/navigation.html #}
 
-</body>
-</html>
+<nav class="navbar navbar-expand-lg navbar-dark" style="background: var(--primary);">
+
+    <div class="container">
+
+        {# Brand #}
+        <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+            <span class="brand-logo rounded-3 d-inline-flex align-items-center justify-content-center">
+                <i class="bi bi-cloud-arrow-down-fill fs-4 text-white"></i>
+            </span>
+            <div class="d-flex flex-column lh-sm">
+                <span class="fw-bold">فایل‌مارکت</span>
+                <small class="text-white-50 d-none d-md-inline">فایل‌های دیجیتال باکیفیت</small>
+            </div>
+        </a>
+
+        {# Toggler #}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+
+            {# Main links #}
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-1 gap-lg-2 mt-3 mt-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link nav-pill" href="/products/">
+                        <i class="bi bi-bag ms-1"></i>محصولات
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-pill" href="/mediafiles/">
+                        <i class="bi bi-folder2-open ms-1"></i>فایل‌ها
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-pill" href="/about/">
+                        <i class="bi bi-info-circle ms-1"></i>درباره ما
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-pill" href="/contact/">
+                        <i class="bi bi-envelope ms-1"></i>تماس
+                    </a>
+                </li>
+            </ul>
+
+            {# Right side actions - User Dropdown #}
+            <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0 ms-lg-3">
+                {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary btn-sm dropdown-toggle d-flex align-items-center gap-2"
+                                type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            <!-- آواتار دایره‌ای -->
+                            <span class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center"
+                                  style="width:36px;height:36px;font-size:1rem;">
+                                <i class="bi bi-person-fill"></i>
+                            </span>
+                            <!-- نام کاربر -->
+                            <span class="d-none d-lg-inline fw-semibold">{{ user.get_username }}</span>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4 mt-2"
+                            aria-labelledby="userMenu"
+                            style="min-width: 220px;">
+
+                            <!-- خوش آمد گویی -->
+                            <li class="px-3 py-2 text-end user-welcome">
+                                <div class="small text-muted">خوش اومدی</div>
+                                <div class="fw-semibold">{{ user.get_username }}</div>
+                            </li>
+
+                            <li><hr class="dropdown-divider my-1"></li>
+
+                            <!-- لینک‌ها -->
+                            <li>
+                                <a class="dropdown-item py-2 d-flex align-items-center justify-content-between"
+                                   href="{% url 'accounts:profile' %}">
+                                    <span>پروفایل</span>
+                                    <i class="bi bi-person-badge ms-2"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2 d-flex align-items-center justify-content-between"
+                                   href="/orders/">
+                                    <span>سفارش‌ها</span>
+                                    <i class="bi bi-receipt ms-2"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2 d-flex align-items-center justify-content-between"
+                                   href="/accounts/downloads/">
+                                    <span>دانلودها</span>
+                                    <i class="bi bi-cloud-arrow-down ms-2"></i>
+                                </a>
+                            </li>
+
+                            <li><hr class="dropdown-divider my-1"></li>
+
+                            <!-- خروج -->
+                            <li>
+                                <a class="dropdown-item py-2 text-danger d-flex align-items-center justify-content-between"
+                                   href="{% url 'accounts:logout' %}">
+                                    <span>خروج</span>
+                                    <i class="bi bi-box-arrow-left ms-2"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <a class="btn btn-outline-primary btn-sm px-3" href="{% url 'accounts:login' %}">ورود</a>
+                    <a class="btn btn-primary btn-sm px-3" href="{% url 'accounts:signup' %}">ثبت‌نام</a>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</nav>

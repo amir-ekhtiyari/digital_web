@@ -1,64 +1,96 @@
-# accounts/views.py
 from django.contrib import messages
-from django.contrib.auth import login, logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import render, redirect, get_object_or_404
-from .forms import SignUpForm, ProfileUpdateForm
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
+
+from .forms import SignUpForm, ProfileUpdateForm, LoginForm, EmailLoginForm
 from .models import Profile
-from django.contrib import messages
-from django.contrib.auth import login, logout
-
-
-
-
-def login_view(request):
-    if request.user.is_authenticated:
-        return redirect("core:home")
-
-    if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            messages.success(request, "با موفقیت وارد شدی.")
-            return redirect("accounts:profile")
-        else:
-            print(form.errors)  # این خط را اضافه کن
-            messages.error(request, "نام کاربری یا رمز عبور اشتباه است.")
-    else:
-        form = AuthenticationForm()
-
-    return render(request, "accounts/login.html", {"form": form})
-
-
-def logout_view(request):
-    if request.user.is_authenticated:
-        logout(request)
-    return redirect("core:home")
 
 
 def signup_view(request):
     if request.user.is_authenticated:
-        return redirect("core:home")
+        return redirect("accounts:profile")
 
-    if request.method == "POST":
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            Profile.objects.get_or_create(user=user, defaults={"role": "buyer"})
-            login(request, user)
-            messages.success(request, "حسابت با موفقیت ساخته شد.")
-            return redirect("accounts:profile")
-    else:
-        form = SignUpForm()
+    form = SignUpForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        user = form.save(commit=False)
+
+        # DEV: ایمیل/اکانت پیش‌فرض فعال
+        user.is_active = True
+        user.save()
+
+        Profile.objects.get_or_create(user=user, defaults={"role": "buyer"})
+
+        messages.success(request, "ثبت‌نام انجام شد. حالا می‌تونی وارد شوی.")
+        return redirect("accounts:login")
 
     return render(request, "accounts/signup.html", {"form": form})
 
 
+def login_view(request):
+    if request.user.is_authenticated:
+        return redirect("accounts:profile")
+
+    form = LoginForm(request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        identifier = form.cleaned_data["username_or_email"].strip()
+        password = form.cleaned_data["password"].strip()
+
+        user_obj = User.objects.filter(username__iexact=identifier).first()
+        if user_obj is None:
+            user_obj = User.objects.filter(email__iexact=identifier).first()
+
+        if not user_obj:
+            messages.error(request, "نام کاربری/ایمیل یا رمز عبور اشتباه است.")
+            return render(request, "accounts/login.html", {"form": form})
+
+        user = authenticate(request, username=user_obj.username, password=password)
+        if user is None:
+            messages.error(request, "نام کاربری/ایمیل یا رمز عبور اشتباه است.")
+            return render(request, "accounts/login.html", {"form": form})
+
+        login(request, user)
+        return redirect("accounts:profile")
+
+    return render(request, "accounts/login.html", {"form": form})
+
+
+def email_login_view(request):
+    if request.user.is_authenticated:
+        return redirect("accounts:profile")
+
+    form = EmailLoginForm(request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        email = form.cleaned_data["email"].strip()
+        password = form.cleaned_data["password"].strip()
+
+        user_obj = User.objects.filter(email__iexact=email).first()
+        if not user_obj:
+            messages.error(request, "ایمیل یا رمز عبور اشتباه است.")
+            return render(request, "accounts/email_login.html", {"form": form})
+
+        user = authenticate(request, username=user_obj.username, password=password)
+        if user is None:
+            messages.error(request, "ایمیل یا رمز عبور اشتباه است.")
+            return render(request, "accounts/email_login.html", {"form": form})
+
+        login(request, user)
+        return redirect("accounts:profile")
+
+    return render(request, "accounts/email_login.html", {"form": form})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("core:home")
+
+
 @login_required
 def profile_view(request):
-    profile = get_object_or_404(Profile, user=request.user)
+    profile, _ = Profile.objects.get_or_create(user=request.user, defaults={"role": "buyer"})
 
     if request.method == "POST":
         p_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
@@ -69,9 +101,4 @@ def profile_view(request):
     else:
         p_form = ProfileUpdateForm(instance=profile)
 
-    context = {
-        "profile": profile,
-        "p_form": p_form,
-    }
-    return render(request, "accounts/profile.html", context)
-
+    return render(request, "accounts/profile.html", {"profile": profile, "p_form": p_form})

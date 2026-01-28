@@ -1,180 +1,162 @@
 {% extends "parents/base.html" %}
 {% load static %}
 
-{% block title %}صفحه اصلی{% endblock %}
-
-{% block hero %}
-<section class="hero-section position-relative overflow-hidden">
-    <div class="container py-4 py-md-5">
-        <div class="row align-items-center gy-4">
-            <!-- متن سمت چپ -->
-            <div class="col-lg-6">
-                <h1 class="fw-bold mb-3">
-                    به <span class="text-primary">فروشگاه فایل</span> خوش آمدید
-                </h1>
-                <p class="text-muted mb-3">
-                    مقالات علمی، کتاب‌های کاربردی، موسیقی، تصاویر حرفه‌ای و قالب‌های آماده؛
-                    همه در یک‌جا با دانلود فوری و پرداخت امن.
-                </p>
-                <div class="d-flex flex-wrap gap-2">
-                    <a href="/products/" class="btn btn-primary btn-lg px-4">
-                        <i class="bi bi-bag ms-1"></i>
-                        مشاهده محصولات
-                    </a>
-                    <a href="/mediafiles/" class="btn btn-outline-secondary btn-lg px-4">
-                        <i class="bi bi-collection ms-1"></i>
-                        مشاهده فایل‌های رایگان
-                    </a>
-                </div>
-                <div class="d-flex flex-wrap gap-3 mt-3 small text-muted">
-                    <span><i class="bi bi-check-circle-fill text-success ms-1"></i>دانلود آنی بعد از پرداخت</span>
-                    <span><i class="bi bi-check-circle-fill text-success ms-1"></i>پشتیبانی مستقیم فروشنده</span>
-                </div>
-            </div>
-
-            <!-- بنر سمت راست -->
-            <div class="col-lg-6">
-                <div class="hero-banner position-relative">
-                    <div class="hero-image-wrapper position-relative overflow-hidden rounded-4 shadow">
-                        <img src="{% static 'image/hero.jpg' %}"
-                             class="img-fluid hero-img"
-                             alt="بنر سایت">
-                        <div class="hero-overlay-gradient"></div>
-                    </div>
-
-                    <div class="hero-badge position-absolute top-0 start-0 mt-3 ms-3 bg-white rounded-3 shadow-sm p-2 small">
-                        <span class="d-flex align-items-center">
-                            <i class="bi bi-stars text-warning fs-5 ms-2"></i>
-                            بیش از <b class="mx-1">۱۰۰۰+</b> فایل باکیفیت
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-{% endblock hero %}
+{% block title %}صفحه اصلی - فایل‌مارکت{% endblock %}
 
 {% block content %}
 
-<!-- جدیدترین محصولات -->
-<section class="py-4 py-md-5">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div>
-                <h3 class="fw-bold mb-1">جدیدترین محصولات</h3>
-                <p class="text-muted small mb-0">
-                    آخرین فایل‌های اضافه‌شده به فروشگاه را از اینجا ببین.
-                </p>
+<section class="home-hero mb-4 mb-lg-5">
+  <div class="home-hero-inner">
+    <div class="container py-4 py-lg-5">
+      <div class="row align-items-center g-4 g-lg-5">
+
+        <div class="col-lg-7">
+          <div class="hero-badges mb-3">
+            <span class="hero-badge"><i class="bi bi-lightning-charge ms-1"></i>دانلود فوری</span>
+            <span class="hero-badge"><i class="bi bi-shield-check ms-1"></i>پرداخت امن</span>
+            <span class="hero-badge d-none d-sm-inline-flex"><i class="bi bi-stars ms-1"></i>منتخب</span>
+          </div>
+
+          <h1 class="hero-title fw-bold text-white mb-3">
+            فایل‌های دیجیتال؛ سریع بخر، فوری دانلود کن
+          </h1>
+
+          <p class="hero-subtitle text-white-50 mb-4">
+            مقاله، کتاب، موسیقی، عکس و قالب آماده—همه یک‌جا با پرداخت امن و دانلود سریع.
+          </p>
+
+          <div class="hero-actions d-flex flex-wrap gap-2">
+            <a href="/products/" class="btn btn-outline-light btn-lg px-4 btn-hero-outline">
+              <i class="bi bi-bag ms-1"></i> مشاهده محصولات
+            </a>
+
+            <a href="/mediafiles/" class="btn btn-outline-light btn-lg px-4 btn-hero-outline">
+              <i class="bi bi-collection ms-1"></i> فایل‌های رایگان
+            </a>
+          </div>
+
+          <div class="hero-trust mt-4 text-white-50 small">
+            <span class="me-3"><i class="bi bi-check-circle-fill text-success ms-1"></i>کیفیت بررسی‌شده</span>
+            <span class="me-3"><i class="bi bi-check-circle-fill text-success ms-1"></i>تحویل فوری</span>
+            <span><i class="bi bi-check-circle-fill text-success ms-1"></i>پشتیبانی</span>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="hero-card">
+            <div class="small text-white-50 mb-2">شروع سریع</div>
+            <div class="fw-bold text-white mb-2">برای خرید آماده‌ای؟</div>
+            <div class="text-white-50 small mb-3">
+              محصول رو انتخاب کن، پرداخت کن، لینک دانلود همون لحظه فعاله.
             </div>
-            <a href="/products/" class="btn btn-outline-primary btn-sm d-none d-md-inline-flex">
-                مشاهده همه محصولات
-                <i class="bi bi-arrow-left-short me-1"></i>
-            </a>
+
+            <div class="d-grid gap-2">
+              <a href="/products/" class="btn btn-outline-light btn-hero-outline btn-lg">رفتن به محصولات</a>
+              <a href="/accounts/signup/" class="btn btn-outline-light btn-hero-outline">ساخت حساب کاربری</a>
+            </div>
+
+            <div class="mt-3 small text-white-50">
+              <i class="bi bi-info-circle ms-1"></i>
+              راهنما: یک محصول را باز کن و روی دانلود بزن.
+            </div>
+          </div>
         </div>
 
-        <div class="row g-4">
-            {% for item in products|slice:":3" %}
-                <div class="col-md-4">
-                    <div class="card product-card h-100 border-0 shadow-sm">
-                        {% with img=item.get_main_image %}
-                            {% if img %}
-                                <img src="{{ img.url }}" class="card-img-top product-img" alt="{{ item.title }}">
-                            {% else %}
-                                <img src="{% static 'image/placeholder.jpg' %}" class="card-img-top product-img" alt="عکس محصول">
-                            {% endif %}
-                        {% endwith %}
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title mb-2 text-truncate">{{ item.title }}</h5>
-                            <p class="card-text text-muted small mb-3">
-                                {{ item.description|truncatechars:90 }}
-                            </p>
-
-                            <div class="mt-auto">
-                                <div class="d-flex justify-content-between align-items-center mb-2 small text-muted">
-                                    <span>
-                                        <i class="bi bi-download ms-1"></i>
-                                        {{ item.download_count|default:"0" }} دانلود
-                                    </span>
-                                    <span class="fw-bold text-primary">
-                                        {{ item.price_display|default:"رایگان" }}
-                                    </span>
-                                </div>
-                                <a href="/products/{{ item.id }}/" class="btn btn-primary w-100 btn-sm">
-                                    مشاهده محصول
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% empty %}
-                <div class="col-12">
-                    <div class="alert alert-info text-center mb-0">
-                        هنوز محصولی اضافه نشده است.
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-
-        <div class="text-center mt-4 d-md-none">
-            <a href="/products/" class="btn btn-outline-primary btn-sm">
-                مشاهده همه محصولات
-            </a>
-        </div>
+      </div>
     </div>
+  </div>
 </section>
 
-<!-- مزایا / چرا ما -->
-<section class="py-4 py-md-5 bg-light">
-    <div class="container">
-        <h4 class="fw-bold text-center mb-4">چرا از ما خرید کنی؟</h4>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="feature-card text-center p-3 p-md-4 h-100">
-                    <div class="icon-circle bg-primary text-white mx-auto mb-3">
-                        <i class="bi bi-lightning-charge"></i>
-                    </div>
-                    <h6 class="fw-bold mb-2">دانلود فوری و بدون معطلی</h6>
-                    <p class="small text-muted mb-0">
-                        بعد از پرداخت، لینک دانلود بلافاصله در اختیار تو قرار می‌گیرد.
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="feature-card text-center p-3 p-md-4 h-100">
-                    <div class="icon-circle bg-success text-white mx-auto mb-3">
-                        <i class="bi bi-shield-check"></i>
-                    </div>
-                    <h6 class="fw-bold mb-2">کیفیت و پشتیبانی</h6>
-                    <p class="small text-muted mb-0">
-                        فایل‌ها بررسی‌شده هستند و در صورت مشکل، پشتیبانی در کنارت است.
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="feature-card text-center p-3 p-md-4 h-100">
-                    <div class="icon-circle bg-warning text-white mx-auto mb-3">
-                        <i class="bi bi-credit-card"></i>
-                    </div>
-                    <h6 class="fw-bold mb-2">قیمت منصفانه</h6>
-                    <p class="small text-muted mb-0">
-                        تلاش شده بین کیفیت محتوا و قیمت، بهترین تعادل برقرار شود.
-                    </p>
-                </div>
-            </div>
-        </div>
+
+<section class="py-2 py-lg-3">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-3">
+      <div>
+        <h3 class="fw-bold mb-1">جدیدترین محصولات</h3>
+        <p class="text-muted small mb-0">آخرین فایل‌های اضافه‌شده را ببین.</p>
+      </div>
+      <a href="/products/" class="btn btn-outline-primary btn-sm d-none d-md-inline-flex">
+        مشاهده همه
+        <i class="bi bi-arrow-left-short me-1"></i>
+      </a>
     </div>
+
+    <div class="row g-4">
+      {% for item in products|slice:":6" %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+            {% with first_image=item.images.first %}
+              {% if first_image and first_image.image %}
+                <img src="{{ first_image.image.url }}"
+                     class="card-img-top product-img-fixed"
+                     alt="{{ item.title }}">
+              {% else %}
+                <img src="{% static 'images/placeholder.jpg' %}"
+                     class="card-img-top product-img-fixed"
+                     alt="عکس محصول">
+              {% endif %}
+            {% endwith %}
+
+            <div class="card-body d-flex flex-column p-3 p-lg-4">
+              <h5 class="mb-2 text-truncate">{{ item.title }}</h5>
+              <p class="text-muted small mb-3">{{ item.description|truncatechars:90 }}</p>
+
+              <div class="mt-auto">
+                <div class="d-flex justify-content-between align-items-center mb-2 small text-muted">
+                  <span><i class="bi bi-download ms-1"></i>{{ item.download_count|default:"0" }} دانلود</span>
+                  <span class="fw-bold text-primary">{{ item.price_display|default:"رایگان" }}</span>
+                </div>
+                <a href="/products/{{ item.id }}/" class="btn btn-primary w-100 btn-sm">مشاهده محصول</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12">
+          <div class="alert alert-info text-center mb-0">هنوز محصولی اضافه نشده است.</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
 </section>
 
-<!-- توضیحات پایینی -->
-<section class="py-4 py-md-5">
-    <div class="container text-center">
-        <p class="lead text-secondary mx-auto" style="max-width: 650px;">
-            در این سایت بهترین فایل‌های دیجیتال شامل کتاب، مقاله، موسیقی، تصاویر و قالب‌های حرفه‌ای ارائه می‌شود
-            تا بتوانی در کوتاه‌ترین زمان به محتوای موردنیازت دسترسی پیدا کنی.
-        </p>
+
+<section class="py-4 py-lg-5 bg-light mt-4">
+  <div class="container">
+    <h4 class="fw-bold text-center mb-4">چرا از ما خرید کنی؟</h4>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 text-center">
+          <div class="icon-circle-sm bg-primary text-white mx-auto mb-3">
+            <i class="bi bi-lightning-charge"></i>
+          </div>
+          <h6 class="fw-bold mb-2">دانلود فوری</h6>
+          <p class="small text-muted mb-0">بعد از پرداخت، لینک دانلود بلافاصله فعال می‌شود.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 text-center">
+          <div class="icon-circle-sm bg-success text-white mx-auto mb-3">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <h6 class="fw-bold mb-2">کیفیت و پشتیبانی</h6>
+          <p class="small text-muted mb-0">فایل‌ها بررسی‌شده هستند و پشتیبانی در کنارت است.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 text-center">
+          <div class="icon-circle-sm bg-warning text-dark mx-auto mb-3">
+            <i class="bi bi-credit-card"></i>
+          </div>
+          <h6 class="fw-bold mb-2">قیمت منصفانه</h6>
+          <p class="small text-muted mb-0">بین کیفیت محتوا و قیمت، تعادل خوب برقرار شده.</p>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
 
 {% endblock %}
