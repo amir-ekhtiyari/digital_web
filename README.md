@@ -10,7 +10,11 @@
 
 <p align="center">
   <img src="Screenshots/2.jpg" width="900" alt="Screenshot 2" />
-  <img src="Screenshots/3.jpg" width="900" alt="Screenshot 3" />
+  <img src="Screenshots/10.jpg" width="900" alt="Screenshot 10" />
+</p>
+
+<p align="center">
+<img src="Screenshots/3.jpg" width="900" alt="Screenshot 3" />
 </p>
 
 <p align="center">
@@ -27,6 +31,7 @@
   <img src="Screenshots/8.jpg" width="900" alt="Screenshot 8" />
   <img src="Screenshots/9.jpg" width="900" alt="Screenshot 9" />
 </p>
+
 
 ## Run locally
 
