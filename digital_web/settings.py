@@ -150,3 +150,7 @@ DEFAULT_FROM_EMAIL = "no-reply@yourdomain.com"
 
 LOGIN_URL = "accounts:login"
 LOGIN_REDIRECT_URL = "accounts:profile"
+
+
+# تنظیمات Kavenegar برای ارسال پیامک
+#KAVENEGAR_API_KEY = "YOUR_API_KEY_HERE"
